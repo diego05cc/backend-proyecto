@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend_proyecto.context;
 
@@ -11,9 +12,11 @@ using backend_proyecto.context;
 namespace backend_proyecto.Migrations
 {
     [DbContext(typeof(TestDbRH))]
-    partial class TestDbRHModelSnapshot : ModelSnapshot
+    [Migration("20241007040027_documents")]
+    partial class documents
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
