@@ -1,6 +1,5 @@
 ﻿using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
-using Task = backend_proyecto.model.Task;
 
 namespace backend_proyecto.context
 {
@@ -8,7 +7,6 @@ namespace backend_proyecto.context
     {
         private object withmany;
 
-        public TestDbRH (DbContextOptions options) : base(options)
         {
             
         }
