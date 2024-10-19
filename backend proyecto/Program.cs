@@ -1,11 +1,11 @@
-using backend_proyecto.context;
+using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var Conect = builder.Configuration.GetConnectionString("conection");
-builder.Services.AddDbContext<TestDbRH>(options => options.UseSqlServer(Conect));
+builder.Services.AddDbContext<TimeTrackingContext>(options => options.UseSqlServer(Conect));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
