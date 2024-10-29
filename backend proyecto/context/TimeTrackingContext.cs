@@ -9,39 +9,38 @@ public class TimeTrackingContext : DbContext
     
         }
      
-    public DbSet<Empleado> Empleados { get; set; }
-    public DbSet<Proyecto> Proyectos { get; set; }
-    public DbSet<Tarea> Tareas { get; set; }
-    public DbSet<RegistroDeTiempo> RegistrosDeTiempo { get; set; }
-    public DbSet<EmpleadoProyecto> EmpleadoProyectos { get; set; } // Tabla intermedia
+    public DbSet<Employed> Employees { get; set; }
+    public DbSet<Project> Proyectos { get; set; }
+    public DbSet<backend_proyecto.model.Task> Tareas { get; set; }
+    public DbSet<Registeroftime> RegistrosDeTiempo { get; set; }
+    public DbSet<Employedproject> Employedprojects { get; set; } // Tabla intermedia
 
-    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<EmpleadoProyecto>()
+        modelBuilder.Entity<Employedproject>()
        .HasKey(ep => new { ep.EmpleadoId, ep.ProyectoId }); // Define la clave primaria compuesta
 
-        modelBuilder.Entity<EmpleadoProyecto>()
+        modelBuilder.Entity<Employedproject>()
             .HasOne(ep => ep.Empleado)
             .WithMany(e => e.EmpleadoProyectos)
             .HasForeignKey(ep => ep.EmpleadoId);
 
-        modelBuilder.Entity<EmpleadoProyecto>()
+        modelBuilder.Entity<Employedproject>()
             .HasOne(ep => ep.Proyecto)
             .WithMany(p => p.EmpleadoProyectos)
             .HasForeignKey(ep => ep.ProyectoId);
 
-        modelBuilder.Entity<Tarea>()
+        modelBuilder.Entity<backend_proyecto.model.Task>()
             .HasOne(t => t.Proyecto)
             .WithMany(p => p.Tareas)
             .HasForeignKey(t => t.ProyectoId);
 
-        modelBuilder.Entity<RegistroDeTiempo>()
+        modelBuilder.Entity<Registeroftime>()
             .HasOne(rt => rt.Empleado)
             .WithMany(e => e.RegistrosDeTiempo)
             .HasForeignKey(rt => rt.EmpleadoId);
 
-        modelBuilder.Entity<RegistroDeTiempo>()
+        modelBuilder.Entity<Registeroftime>()
             .HasOne(rt => rt.Tarea)
             .WithMany(t => t.RegistrosDeTiempo)
             .HasForeignKey(rt => rt.TareaId);

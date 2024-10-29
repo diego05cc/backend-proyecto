@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 namespace backend_proyecto.model
 {
-        public class RegistroDeTiempo
+        public class Registeroftime
         {
             public int Id { get; set; }
             public int EmpleadoId { get; set; }
@@ -10,7 +10,7 @@ namespace backend_proyecto.model
             public TimeSpan HoraInicio { get; set; }
             public TimeSpan HoraFin { get; set; }
             public required string Descripcion { get; set; }
-            public required Empleado Empleado { get; set; }
-            public required Tarea Tarea { get; set; }
+            public required Employed Empleado { get; set; }
+            public required Task Tarea { get; set; }
         }
     }
