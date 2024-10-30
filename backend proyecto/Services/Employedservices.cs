@@ -10,8 +10,11 @@ namespace AWEPP.Services
     {
         Task<IEnumerable<Employed>> GetAllEmployedsAsync();
         Task<Employed> GetEmployedByIdAsync(int id);
-        Task<Employed> CreateEmployedAsync(Employed Employed);
-        Task<Employed> UpdateEmployedAsync(Employed Employed);
-        backend_proyecto.model.Task SoftDeleteEmployedAsync(int id);
+        Task<Employed> CreateEmployedAsync(Employed employed);
+        Task<Employed> UpdateEmployedAsync(Employed employed);
+
+        backend_proyecto.model.Tasks SoftDeleteEmployedAsync(int id);
     }
 }
+
+

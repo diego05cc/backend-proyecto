@@ -1,18 +1,19 @@
+
 ﻿using AWEPP.Repositories;
 using backend_proyecto.model; 
 using Microsoft.EntityFrameworkCore;
 
 
-    public class EmployedprojectRepository : IEmployedprojectRepository
+public class EmployedprojectRepository : IEmployedprojectRepository
 {
-        private readonly TimeTrackingContext _context;
+    private readonly TimeTrackingContext _context;
 
-        public EmployedprojectRepository(TimeTrackingContext context)
+    public EmployedprojectRepository(TimeTrackingContext context)
     {
-            _context = context;
+        _context = context;
     }
 
-    public async Task<IEnumerable<Employedproject>> GetAllEmployedprojectsAsync() 
+    public async Task<IEnumerable<Employedproject>> GetAllEmployedprojectsAsync()
     {
         return await _context.Employedprojects.ToListAsync();
     }
@@ -56,3 +57,4 @@ using Microsoft.EntityFrameworkCore;
         throw new NotImplementedException();
     }
 }
+

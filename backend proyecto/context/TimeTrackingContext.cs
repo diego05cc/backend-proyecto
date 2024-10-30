@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 public class TimeTrackingContext : DbContext
 
 {
-    public TimeTrackingContext(DbContextOptions<TimeTrackingContext> options): base(options)
-       { 
-    
-        }
-     
+    public TimeTrackingContext(DbContextOptions<TimeTrackingContext> options) : base(options)
+    {
+
+    }
+
     public DbSet<Employed> Employees { get; set; }
-    public DbSet<Project> Proyectos { get; set; }
-    public DbSet<backend_proyecto.model.Task> Tareas { get; set; }
-    public DbSet<Registeroftime> RegistrosDeTiempo { get; set; }
+    public DbSet<Project> Projects { get; set; }
+    public DbSet<backend_proyecto.model.Tasks> tasks { get; set; }
+    public DbSet<Registeroftime> Registeroftimes { get; set; }
     public DbSet<Employedproject> Employedprojects { get; set; } // Tabla intermedia
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ public class TimeTrackingContext : DbContext
             .WithMany(p => p.EmpleadoProyectos)
             .HasForeignKey(ep => ep.ProyectoId);
 
-        modelBuilder.Entity<backend_proyecto.model.Task>()
+        modelBuilder.Entity<Tasks>()
             .HasOne(t => t.Proyecto)
             .WithMany(p => p.Tareas)
             .HasForeignKey(t => t.ProyectoId);

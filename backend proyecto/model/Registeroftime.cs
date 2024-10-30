@@ -6,11 +6,12 @@ namespace backend_proyecto.model
             public int Id { get; set; }
             public int EmpleadoId { get; set; }
             public int TareaId { get; set; }
-            public DateTime Fecha { get; set; }
+             public bool IsDeleted { get; set; }
+              public DateTime Fecha { get; set; }
             public TimeSpan HoraInicio { get; set; }
             public TimeSpan HoraFin { get; set; }
             public required string Descripcion { get; set; }
             public required Employed Empleado { get; set; }
-            public required Task Tarea { get; set; }
+            public required Tasks Tarea { get; set; }
         }
     }

@@ -9,8 +9,13 @@ namespace backend_proyecto.model
         public required string Descripcion { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
+
         public required ICollection<Employedproject> EmpleadoProyectos
         { get; set; }
-        public required ICollection<Task> Tareas { get; set; }
+
+        public required ICollection<Tasks> Tareas { get; set; }
+
+        public bool IsDeleted { get; set; }
+
     }
 }
