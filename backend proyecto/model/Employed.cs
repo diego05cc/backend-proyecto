@@ -2,7 +2,7 @@
 {
     public class Employed
     {
-        public int Id { get; set; }
+        public int Employed_Id { get; set; }
         public required string Nombre { get; set; }
         public required string Apellido { get; set; }
         public required string Departamento { get; set; }
