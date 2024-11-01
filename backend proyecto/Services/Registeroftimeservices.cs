@@ -1,10 +1,10 @@
 ﻿
-using AWEPP.Repositories;
+using backend_proyecto.Repositories;
 using backend_proyecto.model;
 using System.Threading.Tasks;
 
 
-namespace AWEPP.Services
+namespace backend_proyecto.Services
 {
     public interface RegisteroftimeServices
     {

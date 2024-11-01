@@ -9,9 +9,7 @@
         public required string Cargo { get; set; }
         public bool IsDeleted { get; set; }
 
-        public
- DateTime FechaIngreso
-        { get; set; }
+        public DateTime FechaIngreso{ get; set; }
         public required ICollection<Employedproject> EmpleadoProyectos { get; set; }
         public required ICollection<Registeroftime> RegistrosDeTiempo { get; set; }
     }

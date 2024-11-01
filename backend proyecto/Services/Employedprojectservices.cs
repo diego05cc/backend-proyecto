@@ -1,7 +1,7 @@
 ﻿
 using backend_proyecto.model;
 
-namespace AWEPP.Services
+namespace backend_proyecto.Services
 {
     public interface EmployedprojectServices
     {

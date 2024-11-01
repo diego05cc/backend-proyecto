@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend_proyecto.Migrations
 {
     /// <inheritdoc />
-    public partial class prueba6 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Empleados",
+                name: "Employees",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -21,15 +21,16 @@ namespace backend_proyecto.Migrations
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Departamento = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Cargo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     FechaIngreso = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Empleados", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Proyectos",
+                name: "Projects",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -37,66 +38,70 @@ namespace backend_proyecto.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Proyectos", x => x.Id);
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmpleadoProyectos",
+                name: "Employedprojects",
                 columns: table => new
                 {
                     EmpleadoId = table.Column<int>(type: "int", nullable: false),
-                    ProyectoId = table.Column<int>(type: "int", nullable: false)
+                    ProyectoId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmpleadoProyectos", x => new { x.EmpleadoId, x.ProyectoId });
+                    table.PrimaryKey("PK_Employedprojects", x => new { x.EmpleadoId, x.ProyectoId });
                     table.ForeignKey(
-                        name: "FK_EmpleadoProyectos_Empleados_EmpleadoId",
+                        name: "FK_Employedprojects_Employees_EmpleadoId",
                         column: x => x.EmpleadoId,
-                        principalTable: "Empleados",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmpleadoProyectos_Proyectos_ProyectoId",
+                        name: "FK_Employedprojects_Projects_ProyectoId",
                         column: x => x.ProyectoId,
-                        principalTable: "Proyectos",
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tareas",
+                name: "tasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProyectoId = table.Column<int>(type: "int", nullable: false)
+                    ProyectoId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tareas", x => x.Id);
+                    table.PrimaryKey("PK_tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tareas_Proyectos_ProyectoId",
+                        name: "FK_tasks_Projects_ProyectoId",
                         column: x => x.ProyectoId,
-                        principalTable: "Proyectos",
+                        principalTable: "Projects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RegistrosDeTiempo",
+                name: "Registeroftimes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmpleadoId = table.Column<int>(type: "int", nullable: false),
                     TareaId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
                     HoraInicio = table.Column<TimeSpan>(type: "time", nullable: false),
                     HoraFin = table.Column<TimeSpan>(type: "time", nullable: false),
@@ -104,39 +109,39 @@ namespace backend_proyecto.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegistrosDeTiempo", x => x.Id);
+                    table.PrimaryKey("PK_Registeroftimes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RegistrosDeTiempo_Empleados_EmpleadoId",
+                        name: "FK_Registeroftimes_Employees_EmpleadoId",
                         column: x => x.EmpleadoId,
-                        principalTable: "Empleados",
+                        principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RegistrosDeTiempo_Tareas_TareaId",
+                        name: "FK_Registeroftimes_tasks_TareaId",
                         column: x => x.TareaId,
-                        principalTable: "Tareas",
+                        principalTable: "tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmpleadoProyectos_ProyectoId",
-                table: "EmpleadoProyectos",
+                name: "IX_Employedprojects_ProyectoId",
+                table: "Employedprojects",
                 column: "ProyectoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RegistrosDeTiempo_EmpleadoId",
-                table: "RegistrosDeTiempo",
+                name: "IX_Registeroftimes_EmpleadoId",
+                table: "Registeroftimes",
                 column: "EmpleadoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RegistrosDeTiempo_TareaId",
-                table: "RegistrosDeTiempo",
+                name: "IX_Registeroftimes_TareaId",
+                table: "Registeroftimes",
                 column: "TareaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tareas_ProyectoId",
-                table: "Tareas",
+                name: "IX_tasks_ProyectoId",
+                table: "tasks",
                 column: "ProyectoId");
         }
 
@@ -144,19 +149,19 @@ namespace backend_proyecto.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmpleadoProyectos");
+                name: "Employedprojects");
 
             migrationBuilder.DropTable(
-                name: "RegistrosDeTiempo");
+                name: "Registeroftimes");
 
             migrationBuilder.DropTable(
-                name: "Empleados");
+                name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Tareas");
+                name: "tasks");
 
             migrationBuilder.DropTable(
-                name: "Proyectos");
+                name: "Projects");
         }
     }
 }

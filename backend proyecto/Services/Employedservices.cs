@@ -1,20 +1,42 @@
-﻿
-using AWEPP.Repositories;
+using backend_proyecto.Repositories;
 using backend_proyecto.model;
-using System.Threading.Tasks;
 
-
-namespace AWEPP.Services
+namespace backend_proyecto.Services
 {
-    public interface EmployedServices
+    public class Employedservices : IEmployedservices
     {
-        Task<IEnumerable<Employed>> GetAllEmployedsAsync();
-        Task<Employed> GetEmployedByIdAsync(int id);
-        Task<Employed> CreateEmployedAsync(Employed employed);
-        Task<Employed> UpdateEmployedAsync(Employed employed);
+        private readonly IEmployedRepository _repository;
 
-        backend_proyecto.model.Tasks SoftDeleteEmployedAsync(int id);
+        public Employedservices(IEmployedRepository repository)
+        {
+            _repository = repository;
+        }
+
+        public async Task<IEnumerable<Employed>> GetAllEmployedsAsync()
+        {
+            return await _repository.GetAllEmployedsAsync();
+        }
+
+        public async Task<Employed> GetEmployedByIdAsync(int id)
+        {
+            return await _repository.GetEmployedByIdAsync(id);
+        }
+
+        public async Task CreateEmployedAsync(Employed employed)
+        {
+            // Puedes agregar validaciones o lógica adicional antes de crear el empleado
+            await _repository.CreateEmployedAsync(employed);
+        }
+
+        public async Task UpdateEmployedAsync(Employed employed)
+        {
+            // Puedes agregar validaciones o lógica adicional antes de actualizar el empleado
+             await _repository.UpdateEmployedAsync(employed);
+        }
+
+        public async Task SoftDeleteEmployedAsync(int id)
+        {
+            await _repository.SoftDeleteEmployedAsync(id);
+        }
     }
 }
-
-

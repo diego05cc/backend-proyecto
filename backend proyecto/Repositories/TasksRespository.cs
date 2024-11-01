@@ -1,6 +1,6 @@
 ﻿using backend_proyecto.model;
 
-namespace AWEPP.Repositories
+namespace backend_proyecto.Repositories
 {
     public interface ITasksRepository
     {
