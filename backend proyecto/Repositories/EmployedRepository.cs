@@ -1,6 +1,7 @@
 ﻿using backend_proyecto.Repositories;
 using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
+using backend_proyecto.Context;
 
 public class EmployedRepository : IEmployedRepository
 {
@@ -18,7 +19,7 @@ public class EmployedRepository : IEmployedRepository
 
     public async Task<Employed> GetEmployedByIdAsync(int id)
     {
-        return await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+        return await _context.Employees.FirstOrDefaultAsync(e => e.Employed_Id == id && !e.IsDeleted);
     }
 
     public async Task CreateEmployedAsync(Employed employee)
@@ -30,7 +31,7 @@ public class EmployedRepository : IEmployedRepository
 
     public async Task UpdateEmployedAsync(Employed employee)
     {
-        var existingEmployed = await _context.Employees.FindAsync(employee.Id);
+        var existingEmployed = await _context.Employees.FindAsync(employee.Employed_Id);
         if (existingEmployed != null)
         { 
          existingEmployed.Apellido = employee.Apellido;

@@ -1,4 +1,4 @@
-using backend_proyecto.context;
+using backend_proyecto.Context;
 using backend_proyecto.Repositories;
 using backend_proyecto.Services;
 using Microsoft.EntityFrameworkCore;

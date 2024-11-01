@@ -2,6 +2,7 @@
 ﻿using backend_proyecto.Repositories;
 using backend_proyecto.model; 
 using Microsoft.EntityFrameworkCore;
+using backend_proyecto.Context;
 
 
 public class EmployedprojectRepository : IEmployedprojectRepository

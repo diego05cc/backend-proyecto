@@ -2,6 +2,7 @@
 using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using backend_proyecto.Context;
 
 public class TasksRepository : ITasksRepository
 {
