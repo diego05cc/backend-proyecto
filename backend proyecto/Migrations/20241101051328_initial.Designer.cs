@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace backend_proyecto.Migrations
 {
     [DbContext(typeof(TimeTrackingContext))]
-    [Migration("20241019062507_prueba7")]
-    partial class prueba7
+    [Migration("20241101051328_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,7 +24,7 @@ namespace backend_proyecto.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("backend_proyecto.model.Empleado", b =>
+            modelBuilder.Entity("backend_proyecto.model.Employed", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,16 +47,19 @@ namespace backend_proyecto.Migrations
                     b.Property<DateTime>("FechaIngreso")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Empleados");
+                    b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.EmpleadoProyecto", b =>
+            modelBuilder.Entity("backend_proyecto.model.Employedproject", b =>
                 {
                     b.Property<int>("EmpleadoId")
                         .HasColumnType("int");
@@ -64,14 +67,17 @@ namespace backend_proyecto.Migrations
                     b.Property<int>("ProyectoId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("EmpleadoId", "ProyectoId");
 
                     b.HasIndex("ProyectoId");
 
-                    b.ToTable("EmpleadoProyectos");
+                    b.ToTable("Employedprojects");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.Proyecto", b =>
+            modelBuilder.Entity("backend_proyecto.model.Project", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,16 +95,19 @@ namespace backend_proyecto.Migrations
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Proyectos");
+                    b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.RegistroDeTiempo", b =>
+            modelBuilder.Entity("backend_proyecto.model.Registeroftime", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,6 +131,9 @@ namespace backend_proyecto.Migrations
                     b.Property<TimeSpan>("HoraInicio")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("TareaId")
                         .HasColumnType("int");
 
@@ -131,10 +143,10 @@ namespace backend_proyecto.Migrations
 
                     b.HasIndex("TareaId");
 
-                    b.ToTable("RegistrosDeTiempo");
+                    b.ToTable("Registeroftimes");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.Tarea", b =>
+            modelBuilder.Entity("backend_proyecto.model.Tasks", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -145,6 +157,9 @@ namespace backend_proyecto.Migrations
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -157,18 +172,18 @@ namespace backend_proyecto.Migrations
 
                     b.HasIndex("ProyectoId");
 
-                    b.ToTable("Tareas");
+                    b.ToTable("tasks");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.EmpleadoProyecto", b =>
+            modelBuilder.Entity("backend_proyecto.model.Employedproject", b =>
                 {
-                    b.HasOne("backend_proyecto.model.Empleado", "Empleado")
+                    b.HasOne("backend_proyecto.model.Employed", "Empleado")
                         .WithMany("EmpleadoProyectos")
                         .HasForeignKey("EmpleadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend_proyecto.model.Proyecto", "Proyecto")
+                    b.HasOne("backend_proyecto.model.Project", "Proyecto")
                         .WithMany("EmpleadoProyectos")
                         .HasForeignKey("ProyectoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -179,15 +194,15 @@ namespace backend_proyecto.Migrations
                     b.Navigation("Proyecto");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.RegistroDeTiempo", b =>
+            modelBuilder.Entity("backend_proyecto.model.Registeroftime", b =>
                 {
-                    b.HasOne("backend_proyecto.model.Empleado", "Empleado")
+                    b.HasOne("backend_proyecto.model.Employed", "Empleado")
                         .WithMany("RegistrosDeTiempo")
                         .HasForeignKey("EmpleadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend_proyecto.model.Tarea", "Tarea")
+                    b.HasOne("backend_proyecto.model.Tasks", "Tarea")
                         .WithMany("RegistrosDeTiempo")
                         .HasForeignKey("TareaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -198,9 +213,9 @@ namespace backend_proyecto.Migrations
                     b.Navigation("Tarea");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.Tarea", b =>
+            modelBuilder.Entity("backend_proyecto.model.Tasks", b =>
                 {
-                    b.HasOne("backend_proyecto.model.Proyecto", "Proyecto")
+                    b.HasOne("backend_proyecto.model.Project", "Proyecto")
                         .WithMany("Tareas")
                         .HasForeignKey("ProyectoId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -209,21 +224,21 @@ namespace backend_proyecto.Migrations
                     b.Navigation("Proyecto");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.Empleado", b =>
+            modelBuilder.Entity("backend_proyecto.model.Employed", b =>
                 {
                     b.Navigation("EmpleadoProyectos");
 
                     b.Navigation("RegistrosDeTiempo");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.Proyecto", b =>
+            modelBuilder.Entity("backend_proyecto.model.Project", b =>
                 {
                     b.Navigation("EmpleadoProyectos");
 
                     b.Navigation("Tareas");
                 });
 
-            modelBuilder.Entity("backend_proyecto.model.Tarea", b =>
+            modelBuilder.Entity("backend_proyecto.model.Tasks", b =>
                 {
                     b.Navigation("RegistrosDeTiempo");
                 });
