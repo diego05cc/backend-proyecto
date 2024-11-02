@@ -47,7 +47,7 @@ namespace backend_proyecto.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Employedprojects",
+                name: "EmployedProjects",
                 columns: table => new
                 {
                     EmpleadoId = table.Column<int>(type: "int", nullable: false),
@@ -56,15 +56,15 @@ namespace backend_proyecto.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employedprojects", x => new { x.EmpleadoId, x.ProyectoId });
+                    table.PrimaryKey("PK_EmployedProjects", x => new { x.EmpleadoId, x.ProyectoId });
                     table.ForeignKey(
-                        name: "FK_Employedprojects_Employees_EmpleadoId",
+                        name: "FK_EmployedProjects_Employees_EmpleadoId",
                         column: x => x.EmpleadoId,
                         principalTable: "Employees",
                         principalColumn: "Employed_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Employedprojects_Projects_ProyectoId",
+                        name: "FK_EmployedProjects_Projects_ProyectoId",
                         column: x => x.ProyectoId,
                         principalTable: "Projects",
                         principalColumn: "Id",
@@ -72,7 +72,7 @@ namespace backend_proyecto.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "tasks",
+                name: "Tasks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -84,9 +84,9 @@ namespace backend_proyecto.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tasks", x => x.Id);
+                    table.PrimaryKey("PK_Tasks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tasks_Projects_ProyectoId",
+                        name: "FK_Tasks_Projects_ProyectoId",
                         column: x => x.ProyectoId,
                         principalTable: "Projects",
                         principalColumn: "Id",
@@ -117,16 +117,16 @@ namespace backend_proyecto.Migrations
                         principalColumn: "Employed_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Registeroftimes_tasks_TareaId",
+                        name: "FK_Registeroftimes_Tasks_TareaId",
                         column: x => x.TareaId,
-                        principalTable: "tasks",
+                        principalTable: "Tasks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Employedprojects_ProyectoId",
-                table: "Employedprojects",
+                name: "IX_EmployedProjects_ProyectoId",
+                table: "EmployedProjects",
                 column: "ProyectoId");
 
             migrationBuilder.CreateIndex(
@@ -140,8 +140,8 @@ namespace backend_proyecto.Migrations
                 column: "TareaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tasks_ProyectoId",
-                table: "tasks",
+                name: "IX_Tasks_ProyectoId",
+                table: "Tasks",
                 column: "ProyectoId");
         }
 
@@ -149,7 +149,7 @@ namespace backend_proyecto.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Employedprojects");
+                name: "EmployedProjects");
 
             migrationBuilder.DropTable(
                 name: "Registeroftimes");
@@ -158,7 +158,7 @@ namespace backend_proyecto.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "tasks");
+                name: "Tasks");
 
             migrationBuilder.DropTable(
                 name: "Projects");

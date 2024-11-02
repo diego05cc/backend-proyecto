@@ -12,7 +12,7 @@ using backend_proyecto.Context;
 namespace backend_proyecto.Migrations
 {
     [DbContext(typeof(TimeTrackingContext))]
-    [Migration("20241102015221_InitialCreate")]
+    [Migration("20241102032654_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -75,7 +75,7 @@ namespace backend_proyecto.Migrations
 
                     b.HasIndex("ProyectoId");
 
-                    b.ToTable("Employedprojects");
+                    b.ToTable("EmployedProjects");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Project", b =>
@@ -173,7 +173,7 @@ namespace backend_proyecto.Migrations
 
                     b.HasIndex("ProyectoId");
 
-                    b.ToTable("tasks");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Employedproject", b =>

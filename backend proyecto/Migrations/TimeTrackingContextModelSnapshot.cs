@@ -72,7 +72,7 @@ namespace backend_proyecto.Migrations
 
                     b.HasIndex("ProyectoId");
 
-                    b.ToTable("Employedprojects");
+                    b.ToTable("EmployedProjects");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Project", b =>
@@ -170,7 +170,7 @@ namespace backend_proyecto.Migrations
 
                     b.HasIndex("ProyectoId");
 
-                    b.ToTable("tasks");
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Employedproject", b =>
