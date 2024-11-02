@@ -2,11 +2,12 @@
 {
     public class Employedproject
     {
-        public int EmpleadoId { get; set; }
-        public int ProyectoId { get; set; }
+        public int Id { get; set; }
+        public virtual required int EmpleadoId { get; set; }
+        public virtual required int ProyectoId { get; set; }
 
         public required bool IsDeleted { get; set; }
-        public required Employed Empleado { get; set; }
-        public required Project Proyecto { get; set; }
+        public required Employed Employed { get; set; }
+        public required Project Project { get; set; }
     }
 }

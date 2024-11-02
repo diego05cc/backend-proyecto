@@ -11,7 +11,7 @@ namespace backend_proyecto.model
             public TimeSpan HoraInicio { get; set; }
             public TimeSpan HoraFin { get; set; }
             public required string Descripcion { get; set; }
-            public required Employed Empleado { get; set; }
-            public required Tasks Tarea { get; set; }
+            public required Employed Employed { get; set; }
+            public required Tasks Tasks { get; set; }
         }
     }

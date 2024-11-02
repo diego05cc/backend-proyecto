@@ -10,8 +10,8 @@
         public bool IsDeleted { get; set; }
 
         public DateTime FechaIngreso{ get; set; }
-        public required ICollection<Employedproject> EmpleadoProyectos { get; set; }
-        public required ICollection<Registeroftime> RegistrosDeTiempo { get; set; }
+        public List<Employedproject> Employedprojects { get; set; }
+        public List<Registeroftime> RegistrosDeTiempo { get; set; }
     }
 }
 

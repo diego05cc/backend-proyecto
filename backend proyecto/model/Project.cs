@@ -10,12 +10,11 @@ namespace backend_proyecto.model
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
 
-        public required ICollection<Employedproject> EmpleadoProyectos
-        { get; set; }
+        public List<Employedproject> Employedprojects{ get; set; }
 
-        public required ICollection<Tasks> Tareas { get; set; }
+        public List<Tasks> Tasks { get; set; }
 
-        public bool IsDeleted { get; set; }
+        public virtual required bool IsDeleted { get; set; }
 
     }
 }

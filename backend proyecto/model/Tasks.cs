@@ -7,7 +7,7 @@
         public required string Descripcion { get; set; }
         public int ProyectoId { get; set; }
         public bool IsDeleted { get; set; }
-        public required Project Proyecto { get; set; }
-        public required ICollection<Registeroftime> RegistrosDeTiempo { get; set; }
+        public required Project Project { get; set; }
+        public List<Registeroftime> Registeroftimes { get; set; }
     }
 }
