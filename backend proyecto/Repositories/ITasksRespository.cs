@@ -4,10 +4,10 @@ namespace backend_proyecto.repositories
 {
     public interface ITasksRepository
     {
-        Task<IEnumerable<Tasks>> GetAllTasksAsync();
-        Task<Tasks> GetTaskByIdAsync(int id);
-        Task CreateTaskAsync(Tasks task);
-        Task UpdateTaskAsync(Tasks task);
+        Task<IEnumerable<DTOTasks>> GetAllTasksAsync();
+        Task<DTOTasks> GetTaskByIdAsync(int id);
+        Task CreateTaskAsync(DTOTasks task);
+        Task UpdateTaskAsync(DTOTasks task);
         Task SoftDeleteTaskAsync(int id);
     }
 }

@@ -1,13 +1,14 @@
 ﻿using backend_proyecto.model;
+using backend_proyecto.Repositories;
 
 namespace backend_proyecto.services
 {
     public interface IEmployedProjectService
     {
-        Task<IEnumerable<Employedproject>> GetAllEmployedProjectAsync();
-        Task<Employedproject> GetEmployedProjectByIdAsync(int id);
-        Task CreateEmployedProjectAsync(Employedproject employedProject);
-        Task UpdateEmployedProjectAsync(Employedproject employedProject);
-        Task SoftDeleteEmployedProjectAsync(int id);
+        Task<List<Employedproject>> GetAllEmployedProjectAsync();
+        Task<Employedproject> GetEmployedProjectByIdAsync(int Id);
+        Task<Employedproject> CreateEmployedProjectAsync(int EmpleadoId, int ProyectoId, bool IsDeleted);
+        Task<Employedproject> UpdateEmployedProjectAsync(int Id, int EmpleadoId, int ProyectoId, bool IsDeleted);
+        Task<Employedproject> SoftDeleteEmployedProjectAsync(int Id);
     }
 }

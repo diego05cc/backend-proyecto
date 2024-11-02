@@ -1,12 +1,16 @@
 ﻿// Controlador para Empleados
-using backend_proyecto.model;
 using Microsoft.AspNetCore.Mvc;
 using backend_proyecto.Services;
+using backend_proyecto.model;
 using Microsoft.AspNetCore.Http;
+using backend_proyecto.model;
+using backend_proyecto.DTOs;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployedController : ControllerBase
+public class EmployedController : Controller
 {
     private readonly IEmployedservices _employedService;
 
@@ -17,68 +21,79 @@ public class EmployedController : ControllerBase
 
     // GET: api/Employed
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllEmployedsAsync()
+    public async Task<ActionResult<IEnumerable<DTOEmployed>>> GetAllEmployeds()
     {
-        var employed = await _employedService.GetAllEmployedsAsync();
-        return Ok(employed);
+        var Employeds = await _employedService.GetAllEmployedsAsync();
+        var DTOemployed = Employeds.Select(employed => new DTOEmployed
+        {
+            Employed_Id = employed.Employed_Id,
+            Nombre = employed.Nombre,
+            Apellido = employed.Apellido,
+            Departamento = employed.Departamento,
+            Cargo = employed.Cargo,
+            IsDeleted = employed.IsDeleted,
+            FechaIngreso = employed.FechaIngreso,
+        }).ToList();
+        return Ok(DTOemployed);
     }
 
     // GET: api/Employed/{id}
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetEmployedByIdAsync(int id)
+
+    public async Task<ActionResult<DTOEmployed>> GetEmployedByIdAsync(int id)
     {
         var employed = await _employedService.GetEmployedByIdAsync(id);
-        if (employed == null)
+        if(employed == null)
         {
             return NotFound();
         }
-        return Ok(employed);
+        var DTOemployed = new DTOEmployed
+        {
+            Employed_Id = employed.Employed_Id,
+            Nombre = employed.Nombre,
+            Apellido = employed.Apellido,
+            Departamento = employed.Departamento,
+            Cargo = employed.Cargo,
+            IsDeleted = employed.IsDeleted,
+            FechaIngreso = employed.FechaIngreso,
+        };
+        return Ok(DTOemployed);
     }
 
     // POST: api/Employed
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> CreateEmployedAsync([FromBody]Employed employed)
+
+    public async Task<IActionResult> CreateEmployedAsync([FromBody]DTOEmployed employedDTO)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-
-        await _employedService.CreateEmployedAsync(employed);
-        return CreatedAtAction(nameof(GetEmployedByIdAsync), new { id = employed.Employed_Id }, employed);
+        var employed = await _employedService.CreateEmployedAsync(employedDTO.Nombre, employedDTO.Apellido, employedDTO.Departamento, employedDTO.Cargo, employedDTO.IsDeleted, employedDTO.FechaIngreso);
+       return Ok(employed);
     }
 
     // PUT: api/Employed/{id}
     [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> UpdateEmployedAsync(int id, Employed employed)
+    
+    public async Task<IActionResult> UpdateEmployedAsync(int id, DTOEmployed employedDTO)
     {
-        if (id != employed.Employed_Id)
+        if (id != employedDTO.Employed_Id)
         {
             return BadRequest();
         }
-        var existingEmployed = await _employedService.GetEmployedByIdAsync(id);
-        if (existingEmployed == null)
+        var UpdateEmployed = await _employedService.UpdateEmployedAsync(employedDTO.Employed_Id, employedDTO.Nombre, employedDTO.Apellido, employedDTO.Departamento, employedDTO.Cargo, employedDTO.IsDeleted, employedDTO.FechaIngreso);
+        if (UpdateEmployed == null)
         {
-            return NoContent();
+            return NotFound();
         }
 
-        await _employedService.UpdateEmployedAsync(employed);
 
         return NoContent();
     }
 
     // DELETE: api/Employed/{id}
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> SoftDeleteEmployedAsync(int id)
     {
         var Employed = await _employedService.GetEmployedByIdAsync(id);

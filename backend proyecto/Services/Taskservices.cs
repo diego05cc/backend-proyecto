@@ -12,17 +12,17 @@ namespace backend_proyecto.services
             _tasksRepository = tasksRepository;
         }
 
-        public async Task CreateTaskAsync(Tasks task)
+        public async Task CreateTaskAsync(DTOTasks task)
         {
             await _tasksRepository.CreateTaskAsync(task);
         }
 
-        public async Task<IEnumerable<Tasks>> GetAllTasksAsync()
+        public async Task<IEnumerable<DTOTasks>> GetAllTasksAsync()
         {
             return await _tasksRepository.GetAllTasksAsync();
         }
 
-        public async Task<Tasks> GetTaskByIdAsync(int id)
+        public async Task<DTOTasks> GetTaskByIdAsync(int id)
         {
             return await _tasksRepository.GetTaskByIdAsync(id);
         }
@@ -32,7 +32,7 @@ namespace backend_proyecto.services
             await _tasksRepository.SoftDeleteTaskAsync(id);
         }
 
-        public async Task UpdateTaskAsync(Tasks task)
+        public async Task UpdateTaskAsync(DTOTasks task)
         {
             await _tasksRepository.UpdateTaskAsync(task);
         }

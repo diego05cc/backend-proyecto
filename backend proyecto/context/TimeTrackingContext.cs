@@ -2,13 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using backend_proyecto.DTOs;
 
 namespace backend_proyecto.Context
 {
     public class TimeTrackingContext : DbContext
 
     {
-        public TimeTrackingContext(DbContextOptions<TimeTrackingContext> options) : base(options)
+        public TimeTrackingContext(DbContextOptions options) : base(options)
         {
 
         }
@@ -21,6 +22,7 @@ namespace backend_proyecto.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //Employed
             modelBuilder.Entity<Employed>().HasKey(e => e.Employed_Id);
             //EmployedProject

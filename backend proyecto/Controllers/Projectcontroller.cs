@@ -17,7 +17,7 @@ namespace backend_proyecto.controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Project>>> GetAllProjects()
+        public async Task<ActionResult<IEnumerable<DTOProject>>> GetAllProjects()
         {
             var projects = await _projectService.GetAllProjectsAsync();
             return Ok(projects);
@@ -26,7 +26,7 @@ namespace backend_proyecto.controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Project>> GetProjectById(int id)
+        public async Task<ActionResult<DTOProject>> GetProjectById(int id)
         {
             var project = await _projectService.GetProjectByIdAsync(id);
             if (project == null)
@@ -40,7 +40,7 @@ namespace backend_proyecto.controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Project>> CreateProject(Project project)
+        public async Task<ActionResult<DTOProject>> CreateProject(DTOProject project)
         {
             if (!ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace backend_proyecto.controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateProject(int id, Project project)
+        public async Task<IActionResult> UpdateProject(int id, DTOProject project)
         {
             if (id != project.Id)
             {

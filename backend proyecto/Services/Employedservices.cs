@@ -12,31 +12,58 @@ namespace backend_proyecto.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Employed>> GetAllEmployedsAsync()
+        public Task<List<Employed>> GetAllEmployedsAsync()
         {
-            return await _repository.GetAllEmployedsAsync();
+            return  _repository.GetAllEmployedsAsync();
         }
 
-        public async Task<Employed> GetEmployedByIdAsync(int id)
+        public Task<Employed> GetEmployedByIdAsync(int employed_Id)
         {
-            return await _repository.GetEmployedByIdAsync(id);
+            return _repository.GetEmployedByIdAsync(employed_Id);
         }
 
-        public async Task CreateEmployedAsync(Employed employed)
+        public async Task<Employed> CreateEmployedAsync( string Nombre, string Apellido, string Departamento, string Cargo, bool IsDeleted, DateTime FechaIngreso)
         {
-            // Puedes agregar validaciones o lógica adicional antes de crear el empleado
-            await _repository.CreateEmployedAsync(employed);
+            var newEmployed = new Employed
+            {
+                Nombre = Nombre,
+                Apellido = Apellido,
+                Departamento = Departamento,
+                Cargo = Cargo,
+                IsDeleted = IsDeleted,
+                FechaIngreso = FechaIngreso
+
+            };
+            await _repository.CreateEmployedAsync(newEmployed);
+            return newEmployed;
         }
 
-        public async Task UpdateEmployedAsync(Employed employed)
+        public async Task<Employed> UpdateEmployedAsync(int Employed_Id, string Nombre, string Apellido, string Departamento, string Cargo, bool IsDeleted, DateTime FechaIngreso)
         {
             // Puedes agregar validaciones o lógica adicional antes de actualizar el empleado
-             await _repository.UpdateEmployedAsync(employed);
+            var EmployedtoUpdate = await _repository.GetEmployedByIdAsync(Employed_Id);
+            if(EmployedtoUpdate != null)
+            {
+                EmployedtoUpdate.Nombre = Nombre;
+                EmployedtoUpdate.Apellido = Apellido;
+                EmployedtoUpdate.Departamento = Departamento;
+                EmployedtoUpdate.Cargo = Cargo;
+                EmployedtoUpdate.IsDeleted = IsDeleted;
+                EmployedtoUpdate.FechaIngreso=FechaIngreso;
+                await _repository.UpdateEmployedAsync(EmployedtoUpdate);
+            }
+            return EmployedtoUpdate;
         }
 
-        public async Task SoftDeleteEmployedAsync(int id)
+        public async Task<Employed> SoftDeleteEmployedAsync(int Employed_Id)
         {
-            await _repository.SoftDeleteEmployedAsync(id);
+            var EmployedtoDeleted = await _repository.GetEmployedByIdAsync(Employed_Id);
+            if(EmployedtoDeleted != null)
+            {
+                await _repository.SoftDeleteEmployedAsync(EmployedtoDeleted);
+            }
+            return EmployedtoDeleted;
+            
         }
     }
 }

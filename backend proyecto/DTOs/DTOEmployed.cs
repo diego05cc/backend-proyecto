@@ -1,6 +1,7 @@
-﻿namespace backend_proyecto.model
+﻿using backend_proyecto.model;
+namespace backend_proyecto.DTOs
 {
-    public class Employed
+    public class DTOEmployed
     {
         public int Employed_Id { get; set; }
         public  string Nombre { get; set; }
@@ -9,9 +10,7 @@
         public string Cargo { get; set; }
         public bool IsDeleted { get; set; }
 
-        public DateTime FechaIngreso{ get; set; }
-        public List<Employedproject> Employedprojects { get; set; }
-        public List<Registeroftime> RegistrosDeTiempo { get; set; }
+        public DateTime FechaIngreso{ get; set; } = DateTime.UtcNow;
     }
 }
 

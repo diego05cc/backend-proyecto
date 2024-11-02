@@ -1,8 +1,9 @@
 ﻿using backend_proyecto.model;
 using backend_proyecto.services;
 using Microsoft.AspNetCore.Mvc;
+using backend_proyecto.DTOs;
 
-namespace backend_proyecto.controllers
+namespace backend_proyecto.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -15,57 +16,65 @@ namespace backend_proyecto.controllers
             _employedProjectService = employedProjectService;
         }
 
-    
+
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Employedproject>>> GetAllEmployedProjects()
+        public async Task<ActionResult<List<DTOEmployedproject>>> GetAllEmployedProjects()
         {
             var employedProjects = await _employedProjectService.GetAllEmployedProjectAsync();
+            var employedProjectsDto = employedProjects.ConvertAll(EP => new DTOEmployedproject
+            {
+                Id = EP.Id,
+                EmpleadoId = EP.EmpleadoId,
+                ProyectoId = EP.ProyectoId,
+                IsDeleted = EP.IsDeleted
+            });
             return Ok(employedProjects);
         }
 
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Employedproject>> GetEmployedProjectById(int id)
+        public async Task<ActionResult<DTOEmployedproject>> GetEmployedProjectById(int id)
         {
             var employedProject = await _employedProjectService.GetEmployedProjectByIdAsync(id);
             if (employedProject == null)
             {
                 return NotFound();
             }
+            var EPDTO = new DTOEmployedproject
+            {
+                Id = employedProject.Id,
+                EmpleadoId = employedProject.EmpleadoId,
+                ProyectoId = employedProject.ProyectoId,
+                IsDeleted = employedProject.IsDeleted
+            };
             return Ok(employedProject);
         }
 
-        
+
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Employedproject>> CreateEmployedProject(Employedproject employedProject)
+        public async Task<IActionResult> CreateEmployedProject([FromBody] DTOEmployedproject employedProjectDTO)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var EP = await _employedProjectService.CreateEmployedProjectAsync(employedProjectDTO.EmpleadoId, employedProjectDTO.ProyectoId, employedProjectDTO.IsDeleted);
 
-            await _employedProjectService.CreateEmployedProjectAsync(employedProject);
-            return CreatedAtAction("GetEmployedProjectById", new { id = employedProject.EmpleadoId }, employedProject);
+            return Ok(EP);
         }
 
-     
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateEmployedProject(int id, Employedproject employedProject)
+
+        [HttpPut("{id}")] 
+        public async Task<IActionResult> UpdateEmployedProject(int id,[FromBody] DTOEmployedproject employedProjectDTO)
         {
-            if (id != employedProject.EmpleadoId)
+            if (id != employedProjectDTO.Id)
             {
                 return BadRequest();
             }
+            var EPUpdate = await _employedProjectService.UpdateEmployedProjectAsync(employedProjectDTO.Id, employedProjectDTO.EmpleadoId, employedProjectDTO.ProyectoId, employedProjectDTO.IsDeleted);
+            if (EPUpdate == null)
+                return NotFound();
 
-            await _employedProjectService.UpdateEmployedProjectAsync(employedProject);
             return NoContent();
         }
 
@@ -73,11 +82,12 @@ namespace backend_proyecto.controllers
         /// Elimina (soft delete) una asignación de proyecto.
         /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> SoftDeleteEmployedProject(int id)
         {
-            await _employedProjectService.SoftDeleteEmployedProjectAsync(id);
+            var EPDeleted = await _employedProjectService.SoftDeleteEmployedProjectAsync(id);
+            if (EPDeleted == null)
+                return NotFound();
+
             return NoContent();
         }
     }

@@ -12,17 +12,17 @@ namespace backend_proyecto.services
             _projectRepository = projectRepository;
         }
 
-        public async Task CreateProjectAsync(Project project)
+        public async Task CreateProjectAsync(DTOProject project)
         {
             await _projectRepository.CreateProjectAsync(project);
         }
 
-        public async Task<IEnumerable<Project>> GetAllProjectsAsync()
+        public async Task<IEnumerable<DTOProject>> GetAllProjectsAsync()
         {
             return await _projectRepository.GetAllProjectsAsync();
         }
 
-        public async Task<Project> GetProjectByIdAsync(int id)
+        public async Task<DTOProject> GetProjectByIdAsync(int id)
         {
             return await _projectRepository.GetProjectByIdAsync(id);
         }
@@ -32,7 +32,7 @@ namespace backend_proyecto.services
             await _projectRepository.SoftDeleteProjectAsync(id);
         }
 
-        public async Task UpdateProjectAsync(Project project)
+        public async Task UpdateProjectAsync(DTOProject project)
         {
             await _projectRepository.UpdateProjectAsync(project);
         }

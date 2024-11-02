@@ -17,7 +17,7 @@ namespace backend_proyecto.controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Tasks>>> GetAllTasks()
+        public async Task<ActionResult<IEnumerable<DTOTasks>>> GetAllTasks()
         {
             var tasks = await _tasksService.GetAllTasksAsync();
             return Ok(tasks);
@@ -26,7 +26,7 @@ namespace backend_proyecto.controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Tasks>> GetTaskById(int id)
+        public async Task<ActionResult<DTOTasks>> GetTaskById(int id)
         {
             var task = await _tasksService.GetTaskByIdAsync(id);
             if (task == null)
@@ -39,7 +39,7 @@ namespace backend_proyecto.controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Tasks>> CreateTask(Tasks task)
+        public async Task<ActionResult<DTOTasks>> CreateTask(DTOTasks task)
         {
             if (!ModelState.IsValid)
             {
@@ -54,7 +54,7 @@ namespace backend_proyecto.controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateTask(int id, Tasks task)
+        public async Task<IActionResult> UpdateTask(int id, DTOTasks task)
         {
             if (id != task.Id)
             {

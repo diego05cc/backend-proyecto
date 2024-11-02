@@ -18,7 +18,7 @@ namespace backend_proyecto.controllers
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<Registeroftime>>> GetAllRegisteroftimes()
+        public async Task<ActionResult<IEnumerable<DTORegisteroftime>>> GetAllRegisteroftimes()
         {
             var registeroftimes = await _registeroftimeService.GetAllRegisteroftimesAsync();
             return Ok(registeroftimes);
@@ -28,7 +28,7 @@ namespace backend_proyecto.controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Registeroftime>> GetRegisteroftimeById(int id)
+        public async Task<ActionResult<DTORegisteroftime>> GetRegisteroftimeById(int id)
         {
             var registeroftime = await _registeroftimeService.GetRegisteroftimeByIdAsync(id);
             if (registeroftime == null)
@@ -42,7 +42,7 @@ namespace backend_proyecto.controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Registeroftime>> CreateRegisteroftime(Registeroftime registeroftime)
+        public async Task<ActionResult<DTORegisteroftime>> CreateRegisteroftime(DTORegisteroftime registeroftime)
         {
             if (!ModelState.IsValid)
             {
@@ -58,7 +58,7 @@ namespace backend_proyecto.controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateRegisteroftime(int id, Registeroftime registeroftime)
+        public async Task<IActionResult> UpdateRegisteroftime(int id, DTORegisteroftime registeroftime)
         {
             if (id != registeroftime.Id)
             {

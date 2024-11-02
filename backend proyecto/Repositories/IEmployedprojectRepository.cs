@@ -1,13 +1,15 @@
-﻿using backend_proyecto.model;
+﻿using Microsoft.EntityFrameworkCore;
+using backend_proyecto.model;
+using backend_proyecto.Context;
 
-namespace backend_proyecto.repositories
+namespace backend_proyecto.Repositories
 {
     public interface IEmployedProjectRepository
     {
-        Task<IEnumerable<Employedproject>> GetAllEmployedProjectAsync();
+        Task<List<Employedproject>> GetAllEmployedProjectAsync();
         Task<Employedproject> GetEmployedProjectByIdAsync(int id);
         Task CreateEmployedProjectAsync(Employedproject employedProject);
         Task UpdateEmployedProjectAsync(Employedproject employedProject);
-        Task SoftDeleteEmployedProjectAsync(int id);
+        Task SoftDeleteEmployedProjectAsync(Employedproject employedproject);
     }
 }

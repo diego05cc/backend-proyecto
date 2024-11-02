@@ -1,12 +1,13 @@
-using backend_proyecto.Context;
+using backend_proyecto.Repositories;
 using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
+using backend_proyecto.Context;
 
-namespace backend_proyecto.repositories
+namespace backend_proyecto.Repositories
 {
     public class EmployedProjectRepository : IEmployedProjectRepository
     {
-        private readonly TimeTrackingContext _context; // Replace with your actual DbContext class
+        private readonly TimeTrackingContext  _context; // Replace with your actual DbContext class
 
         public EmployedProjectRepository(TimeTrackingContext context)
         {
@@ -19,40 +20,27 @@ namespace backend_proyecto.repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Employedproject>> GetAllEmployedProjectAsync()
+        public async Task<List<Employedproject>> GetAllEmployedProjectAsync()
         {
-            return await _context.EmployedProjects
-              .Where(ep => !ep.IsDeleted)
-            .ToListAsync();
+            return await _context.EmployedProjects.ToListAsync();
         }
 
         public async Task<Employedproject> GetEmployedProjectByIdAsync(int id)
         {
-            return await _context.EmployedProjects
-              .FirstOrDefaultAsync(ep => ep.EmpleadoId == id && !ep.IsDeleted);
+            return await _context.EmployedProjects.FindAsync(id);
+              
         }
 
-        public async Task SoftDeleteEmployedProjectAsync(int id)
+        public async Task SoftDeleteEmployedProjectAsync(Employedproject employedproject)
         {
-            var employedProject = await _context.EmployedProjects.FindAsync(id);
-            if (employedProject != null)
-            {
-                employedProject.IsDeleted = true;
-                await _context.SaveChangesAsync();
-            }
+            _context.EmployedProjects.Remove(employedproject);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateEmployedProjectAsync(Employedproject employedProject)
         {
-            var existingEmployedProject = await _context.EmployedProjects.FindAsync(employedProject.EmpleadoId);
-            if (existingEmployedProject != null)
-            {
-                // Update specific fields if needed (consider using a mapper)
-                existingEmployedProject.EmpleadoId = employedProject.EmpleadoId;
-                existingEmployedProject.ProyectoId = employedProject.ProyectoId;
-
-                await _context.SaveChangesAsync();
-            }
+            _context.EmployedProjects.Update(employedProject);
+            await _context.SaveChangesAsync();
         }
     }
 }

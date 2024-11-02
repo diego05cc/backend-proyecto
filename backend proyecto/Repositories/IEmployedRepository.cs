@@ -4,11 +4,11 @@ namespace backend_proyecto.Repositories
 {
     public interface IEmployedRepository
     {
-        Task<IEnumerable<Employed>> GetAllEmployedsAsync();
+        Task<List<Employed>> GetAllEmployedsAsync();
         Task<Employed> GetEmployedByIdAsync(int id);
-        Task CreateEmployedAsync(Employed Employed);
-        Task UpdateEmployedAsync(Employed Employed);
-        Task SoftDeleteEmployedAsync(int id);
+        Task CreateEmployedAsync(Employed employed);
+        Task UpdateEmployedAsync(Employed employed);
+        Task SoftDeleteEmployedAsync(Employed employed);
 
     }
 
