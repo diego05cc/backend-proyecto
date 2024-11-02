@@ -42,7 +42,7 @@ public class EmployedController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateEmployedAsync(Employed employed)
+    public async Task<ActionResult> CreateEmployedAsync([FromBody]Employed employed)
     {
         if (!ModelState.IsValid)
         {

@@ -59,16 +59,24 @@ namespace backend_proyecto.Migrations
 
             modelBuilder.Entity("backend_proyecto.model.Employedproject", b =>
                 {
-                    b.Property<int>("EmpleadoId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ProyectoId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("EmpleadoId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.HasKey("EmpleadoId", "ProyectoId");
+                    b.Property<int>("ProyectoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmpleadoId");
 
                     b.HasIndex("ProyectoId");
 
@@ -175,70 +183,70 @@ namespace backend_proyecto.Migrations
 
             modelBuilder.Entity("backend_proyecto.model.Employedproject", b =>
                 {
-                    b.HasOne("backend_proyecto.model.Employed", "Empleado")
-                        .WithMany("EmpleadoProyectos")
+                    b.HasOne("backend_proyecto.model.Employed", "Employed")
+                        .WithMany("Employedprojects")
                         .HasForeignKey("EmpleadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend_proyecto.model.Project", "Proyecto")
-                        .WithMany("EmpleadoProyectos")
+                    b.HasOne("backend_proyecto.model.Project", "Project")
+                        .WithMany("Employedprojects")
                         .HasForeignKey("ProyectoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Empleado");
+                    b.Navigation("Employed");
 
-                    b.Navigation("Proyecto");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Registeroftime", b =>
                 {
-                    b.HasOne("backend_proyecto.model.Employed", "Empleado")
+                    b.HasOne("backend_proyecto.model.Employed", "Employed")
                         .WithMany("RegistrosDeTiempo")
                         .HasForeignKey("EmpleadoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend_proyecto.model.Tasks", "Tarea")
-                        .WithMany("RegistrosDeTiempo")
+                    b.HasOne("backend_proyecto.model.Tasks", "Tasks")
+                        .WithMany("Registeroftimes")
                         .HasForeignKey("TareaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Empleado");
+                    b.Navigation("Employed");
 
-                    b.Navigation("Tarea");
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Tasks", b =>
                 {
-                    b.HasOne("backend_proyecto.model.Project", "Proyecto")
-                        .WithMany("Tareas")
+                    b.HasOne("backend_proyecto.model.Project", "Project")
+                        .WithMany("Tasks")
                         .HasForeignKey("ProyectoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Proyecto");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Employed", b =>
                 {
-                    b.Navigation("EmpleadoProyectos");
+                    b.Navigation("Employedprojects");
 
                     b.Navigation("RegistrosDeTiempo");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Project", b =>
                 {
-                    b.Navigation("EmpleadoProyectos");
+                    b.Navigation("Employedprojects");
 
-                    b.Navigation("Tareas");
+                    b.Navigation("Tasks");
                 });
 
             modelBuilder.Entity("backend_proyecto.model.Tasks", b =>
                 {
-                    b.Navigation("RegistrosDeTiempo");
+                    b.Navigation("Registeroftimes");
                 });
 #pragma warning restore 612, 618
         }
