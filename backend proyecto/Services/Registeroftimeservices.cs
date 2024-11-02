@@ -1,17 +1,40 @@
-﻿
-using backend_proyecto.Repositories;
-using backend_proyecto.model;
-using System.Threading.Tasks;
+﻿using backend_proyecto.model;
+using backend_proyecto.repositories;
 
-
-namespace backend_proyecto.Services
+namespace backend_proyecto.services
 {
-    public interface RegisteroftimeServices
+    public class RegisteroftimeService : IRegisteroftimeService
     {
-        Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync();
-        Task<Registeroftime> GetRegisteroftimeByIdAsync(int id);
-        Task<Registeroftime> CreateRegisteroftimeAsync(Registeroftime registeroftime);
-        Task<Registeroftime> UpdateRegisteroftimeAsync(Registeroftime registeroftime);
-        backend_proyecto.model.Tasks SoftDeleteRegisteroftimeAsync(int id);
+        private readonly IRegisteroftimeRepository _registeroftimeRepository;
+
+        public RegisteroftimeService(IRegisteroftimeRepository registeroftimeRepository)
+        {
+            _registeroftimeRepository = registeroftimeRepository;
+        }
+
+        public async Task CreateRegisteroftimeAsync(Registeroftime registeroftime)
+        {
+            await _registeroftimeRepository.CreateRegisteroftimeAsync(registeroftime);
+        }
+
+        public async Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync()
+        {
+            return await _registeroftimeRepository.GetAllRegisteroftimesAsync();
+        }
+
+        public async Task<Registeroftime> GetRegisteroftimeByIdAsync(int id)
+        {
+            return await _registeroftimeRepository.GetRegisteroftimeByIdAsync(id);
+        }
+
+        public async Task SoftDeleteRegisteroftimeAsync(int id)
+        {
+            await _registeroftimeRepository.SoftDeleteRegisteroftimeAsync(id);
+        }
+
+        public async Task UpdateRegisteroftimeAsync(Registeroftime registeroftime)
+        {
+            await _registeroftimeRepository.UpdateRegisteroftimeAsync(registeroftime);
+        }
     }
 }

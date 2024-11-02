@@ -15,9 +15,9 @@ namespace backend_proyecto.Context
 
         public DbSet<Employed> Employees { get; set; }
         public DbSet<Project> Projects { get; set; }
-        public DbSet<Tasks> tasks { get; set; }
+        public DbSet<Tasks> Tasks { get; set; }
         public DbSet<Registeroftime> Registeroftimes { get; set; }
-        public DbSet<Employedproject> Employedprojects { get; set; } // Tabla intermedia
+        public DbSet<Employedproject> EmployedProjects { get; set; } // Tabla intermedia
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

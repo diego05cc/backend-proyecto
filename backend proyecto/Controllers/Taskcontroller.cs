@@ -1,79 +1,77 @@
 ﻿using backend_proyecto.model;
+using backend_proyecto.services;
 using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
-[Route("[controller]")]
-public class TasksController : ControllerBase
+namespace backend_proyecto.controllers
 {
-    private readonly TasksService _tasksService;
-
-    public TasksController(TasksService tasksService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TasksController : ControllerBase
     {
-        _tasksService = tasksService;
-    }
+        private readonly ITasksService _tasksService;
 
-    // GET: api/Tasks
-    [HttpGet]
-    public async Task<IActionResult> GetAllTasksAsync()
-    {
-        var tasks = await _tasksService.GetAllTaskssAsync();
-        return Ok(tasks);
-    }
-
-    // GET: api/Tasks/{id}
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetTaskByIdAsync(int id)
-    {
-        var task = await _tasksService.GetTasksByIdAsync(id);
-        if (task == null)
+        public TasksController(ITasksService tasksService)
         {
-            return NotFound();
-        }
-        return Ok(task);
-    }
-
-    // POST: api/Tasks
-    [HttpPost]
-    public async Task<IActionResult> CreateTaskAsync(Tasks task)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
+            _tasksService = tasksService;
         }
 
-        var createdTask = await _tasksService.CreateTasksAsync(task);
-        return CreatedAtRoute("GetTaskById", new { id = createdTask.Id }, createdTask);
-    }
-
-    // PUT: api/Tasks/{id}
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTaskAsync(int id, Tasks task)
-    {
-        if (id != task.Id)
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Tasks>>> GetAllTasks()
         {
-            return BadRequest();
+            var tasks = await _tasksService.GetAllTasksAsync();
+            return Ok(tasks);
         }
 
-        if (!ModelState.IsValid)
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Tasks>> GetTaskById(int id)
         {
-            return BadRequest(ModelState);
+            var task = await _tasksService.GetTaskByIdAsync(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+            return Ok(task);
         }
 
-        if (await _tasksService.GetTasksByIdAsync(id) == null)
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Tasks>> CreateTask(Tasks task)
         {
-            return NotFound();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _tasksService.CreateTaskAsync(task);
+            return CreatedAtAction("GetTaskById", new { id = task.Id }, task);
         }
 
-        await _tasksService.UpdateTasksAsync(task);
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateTask(int id, Tasks task)
+        {
+            if (id != task.Id)
+            {
+                return BadRequest();
+            }
 
-        return NoContent();
-    }
+            await _tasksService.UpdateTaskAsync(task);
+            return NoContent();
+        }
 
-    // DELETE: api/Tasks/{id} (Soft Delete)
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> SoftDeleteTaskAsync(int id)
-    {
-        await _tasksService.SoftDeleteTasksAsync(id);
-        return NoContent();
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> SoftDeleteTask(int id)
+        {
+            await _tasksService.SoftDeleteTaskAsync(id);
+            return NoContent();
+        }
     }
 }

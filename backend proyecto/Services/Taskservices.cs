@@ -1,17 +1,40 @@
-﻿
-using backend_proyecto.Repositories;
-using backend_proyecto.model;
-using System.Threading.Tasks;
+﻿using backend_proyecto.model;
+using backend_proyecto.repositories;
 
-
-namespace backend_proyecto.Services
+namespace backend_proyecto.services
 {
-    public interface TaskServices
+    public class TasksService : ITasksService
     {
-        Task<IEnumerable<Task>> GetAllTasksAsync();
-        Task<Task> GetTaskByIdAsync(int id);
-        Task<Task> CreateTaskAsync(Task task);
-        Task<Task> UpdateTaskAsync(Task task);
-        backend_proyecto.model.Tasks SoftDeleteTaskAsync(int id);
+        private readonly ITasksRepository _tasksRepository;
+
+        public TasksService(ITasksRepository tasksRepository)
+        {
+            _tasksRepository = tasksRepository;
+        }
+
+        public async Task CreateTaskAsync(Tasks task)
+        {
+            await _tasksRepository.CreateTaskAsync(task);
+        }
+
+        public async Task<IEnumerable<Tasks>> GetAllTasksAsync()
+        {
+            return await _tasksRepository.GetAllTasksAsync();
+        }
+
+        public async Task<Tasks> GetTaskByIdAsync(int id)
+        {
+            return await _tasksRepository.GetTaskByIdAsync(id);
+        }
+
+        public async Task SoftDeleteTaskAsync(int id)
+        {
+            await _tasksRepository.SoftDeleteTaskAsync(id);
+        }
+
+        public async Task UpdateTaskAsync(Tasks task)
+        {
+            await _tasksRepository.UpdateTaskAsync(task);
+        }
     }
 }

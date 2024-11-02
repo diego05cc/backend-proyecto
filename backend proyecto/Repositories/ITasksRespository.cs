@@ -1,8 +1,8 @@
 ﻿using backend_proyecto.model;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.repositories
 {
-    public interface ITasksService
+    public interface ITasksRepository
     {
         Task<IEnumerable<Tasks>> GetAllTasksAsync();
         Task<Tasks> GetTaskByIdAsync(int id);

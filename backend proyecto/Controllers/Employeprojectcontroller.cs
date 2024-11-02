@@ -1,79 +1,84 @@
 ﻿using backend_proyecto.model;
+using backend_proyecto.services;
 using Microsoft.AspNetCore.Mvc;
 
-[ApiController]
-[Route("[controller]")]
-public class EmployedprojectsController : ControllerBase
+namespace backend_proyecto.controllers
 {
-    private readonly EmployedprojectService _employedprojectService;
-
-    public EmployedprojectsController(EmployedprojectService employedprojectService)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmployedProjectController : ControllerBase
     {
-        _employedprojectService = employedprojectService;
-    }
+        private readonly IEmployedProjectService _employedProjectService;
 
-    // GET: api/Employedprojects
-    [HttpGet]
-    public async Task<IActionResult> GetAllEmployedprojectsAsync()
-    {
-        var employedprojects = await _employedprojectService.GetAllEmployedprojectsAsync();
-        return Ok(employedprojects);
-    }
-
-    // GET: api/Employedprojects/{id}
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetEmployedprojectByIdAsync(int id)
-    {
-        var employedproject = await _employedprojectService.GetEmployedprojectByIdAsync(id);
-        if (employedproject == null)
+        public EmployedProjectController(IEmployedProjectService employedProjectService)
         {
-            return NotFound();
-        }
-        return Ok(employedproject);
-    }
-
-    // POST: api/Employedprojects
-    [HttpPost]
-    public async Task<IActionResult> CreateEmployedprojectAsync(Employedproject employedproject)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
+            _employedProjectService = employedProjectService;
         }
 
-        var createdEmployedproject = await _employedprojectService.CreateEmployedprojectAsync(employedproject);
-        return CreatedAtRoute("GetEmployedprojectById", new { id = createdEmployedproject.EmpleadoId }, createdEmployedproject);
-    }
-
-    // PUT: api/Employedprojects/{id}
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEmployedprojectAsync(int id, Employedproject employedproject)
-    {
-        if (id != employedproject.EmpleadoId)
+    
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<Employedproject>>> GetAllEmployedProjects()
         {
-            return BadRequest();
+            var employedProjects = await _employedProjectService.GetAllEmployedProjectAsync();
+            return Ok(employedProjects);
         }
 
-        if (!ModelState.IsValid)
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Employedproject>> GetEmployedProjectById(int id)
         {
-            return BadRequest(ModelState);
+            var employedProject = await _employedProjectService.GetEmployedProjectByIdAsync(id);
+            if (employedProject == null)
+            {
+                return NotFound();
+            }
+            return Ok(employedProject);
         }
 
-        if (await _employedprojectService.GetEmployedprojectByIdAsync(id) == null)
+        
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Employedproject>> CreateEmployedProject(Employedproject employedProject)
         {
-            return NotFound();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            await _employedProjectService.CreateEmployedProjectAsync(employedProject);
+            return CreatedAtAction("GetEmployedProjectById", new { id = employedProject.EmpleadoId }, employedProject);
         }
 
-        await _employedprojectService.UpdateEmployedprojectAsync(employedproject);
+     
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateEmployedProject(int id, Employedproject employedProject)
+        {
+            if (id != employedProject.EmpleadoId)
+            {
+                return BadRequest();
+            }
 
-        return NoContent();
-    }
+            await _employedProjectService.UpdateEmployedProjectAsync(employedProject);
+            return NoContent();
+        }
 
-    // DELETE: api/Employedprojects/{id} (Soft Delete)
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> SoftDeleteEmployedprojectAsync(int id)
-    {
-        await _employedprojectService.SoftDeleteEmployedprojectAsync(id);
-        return NoContent();
+        /// <summary>
+        /// Elimina (soft delete) una asignación de proyecto.
+        /// </summary>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> SoftDeleteEmployedProject(int id)
+        {
+            await _employedProjectService.SoftDeleteEmployedProjectAsync(id);
+            return NoContent();
+        }
     }
 }

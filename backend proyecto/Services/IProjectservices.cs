@@ -1,39 +1,13 @@
-﻿using backend_proyecto.Repositories;
-using backend_proyecto.model;
+﻿using backend_proyecto.model;
 
-public class ProjectService
+namespace backend_proyecto.services
 {
-    private readonly IProjectRepository _repository;
-
-    public ProjectService(IProjectRepository repository)
+    public interface IProjectService
     {
-        _repository = repository;
-    }
-
-    public async Task<IEnumerable<Project>> GetAllProjectsAsync()
-    {
-        return await _repository.GetAllProjectsAsync();
-    }
-
-    public async Task<Project> GetProjectByIdAsync(int id)
-    {
-        return await _repository.GetProjectByIdAsync(id);
-    }
-
-    public async Task<Project> CreateProjectAsync(Project project)
-    {
-        // Puedes agregar validaciones o lógica adicional antes de crear el proyecto
-        return await _repository.CreateProjectAsync(project);
-    }
-
-    public async Task<Project> UpdateProjectAsync(Project project)
-    {
-        // Puedes agregar validaciones o lógica adicional antes de actualizar el proyecto
-        return await _repository.UpdateProjectAsync(project);
-    }
-
-    public async Task SoftDeleteProjectAsync(int id)
-    {
-        await _repository.SoftDeleteProjectAsync(id);
+        Task<IEnumerable<Project>> GetAllProjectsAsync();
+        Task<Project> GetProjectByIdAsync(int id);
+        Task CreateProjectAsync(Project project);
+        Task UpdateProjectAsync(Project project);
+        Task SoftDeleteProjectAsync(int id);
     }
 }
