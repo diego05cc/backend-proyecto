@@ -50,7 +50,7 @@ public class EmployedController : ControllerBase
         }
 
         await _employedService.CreateEmployedAsync(employed);
-        return CreatedAtAction(nameof(GetEmployedByIdAsync), new { id = employed.Id }, employed);
+        return CreatedAtAction(nameof(GetEmployedByIdAsync), new { id = employed.Employed_Id }, employed);
     }
 
     // PUT: api/Employed/{id}
@@ -60,7 +60,7 @@ public class EmployedController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateEmployedAsync(int id, Employed employed)
     {
-        if (id != employed.Id)
+        if (id != employed.Employed_Id)
         {
             return BadRequest();
         }

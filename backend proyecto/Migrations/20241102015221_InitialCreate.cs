@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace backend_proyecto.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace backend_proyecto.Migrations
                 name: "Employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Employed_Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -26,7 +26,7 @@ namespace backend_proyecto.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Employees", x => x.Id);
+                    table.PrimaryKey("PK_Employees", x => x.Employed_Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,7 +61,7 @@ namespace backend_proyecto.Migrations
                         name: "FK_Employedprojects_Employees_EmpleadoId",
                         column: x => x.EmpleadoId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
+                        principalColumn: "Employed_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Employedprojects_Projects_ProyectoId",
@@ -114,7 +114,7 @@ namespace backend_proyecto.Migrations
                         name: "FK_Registeroftimes_Employees_EmpleadoId",
                         column: x => x.EmpleadoId,
                         principalTable: "Employees",
-                        principalColumn: "Id",
+                        principalColumn: "Employed_Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Registeroftimes_tasks_TareaId",
