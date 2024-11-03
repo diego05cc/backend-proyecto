@@ -16,6 +16,7 @@ builder.Services.AddScoped<IEmployedservices, Employedservices>();
 builder.Services.AddScoped<IEmployedProjectRepository,EmployedProjectRepository>();
 builder.Services.AddScoped<IEmployedProjectService,EmployedProjectService>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IRegisteroftimeRepository,RegisteroftimeRepository>();
 builder.Services.AddScoped<IRegisteroftimeService,RegisteroftimeService>();
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
