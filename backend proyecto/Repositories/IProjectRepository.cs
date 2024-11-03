@@ -1,13 +1,14 @@
 ﻿using backend_proyecto.model;
+using System.Threading.Tasks;
 
-namespace backend_proyecto.repositories
+namespace backend_proyecto.Repositories
 {
     public interface IProjectRepository
     {
-        Task<IEnumerable<Project>> GetAllProjectsAsync();
+        Task<List<Project>> GetAllProjectsAsync();
         Task<Project> GetProjectByIdAsync(int id);
         Task CreateProjectAsync(Project project);
         Task UpdateProjectAsync(Project project);
-        Task SoftDeleteProjectAsync(int id);
+        Task SoftDeleteProjectAsync(Project project);
     }
 }

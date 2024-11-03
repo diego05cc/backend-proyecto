@@ -8,7 +8,7 @@ namespace backend_proyecto.model
         public required string Nombre { get; set; }
         public required string Descripcion { get; set; }
         public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public DateTime FechaFin { get; set; }  
 
         public List<Employedproject> Employedprojects{ get; set; }
 

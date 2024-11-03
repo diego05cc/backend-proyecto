@@ -1,57 +1,65 @@
-﻿using backend_proyecto.model;
-using backend_proyecto.repositories;
-using backend_proyecto.DTOs;
+﻿using backend_proyecto.Repositories;
+using backend_proyecto.model;
+using System.Threading.Tasks;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
     public class ProjectService : IProjectService
     {
-        private readonly IProjectRepository _projectRepository;
+        private readonly IProjectRepository _repository;
 
-        public ProjectService(IProjectRepository projectRepository)
+        public ProjectService(IProjectRepository repository)
         {
-            //_projectRepository = projectRepository;
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
-        public async Task CreateProjectAsync(Project project)
+        public Task<List<Project>> GetAllProjectsAsync()
         {
-            //await _projectRepository.CreateProjectAsync(project);
-            throw new NotImplementedException();
+            return _repository.GetAllProjectsAsync();
         }
 
-        public Task CreateProjectAsync(DTOProject project)
+        public Task<Project> GetProjectByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _repository.GetProjectByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Project>> GetAllProjectsAsync()
+        public async Task<Project> CreateProjectAsync(string nombre, string descripcion, DateTime fechaInicio, DateTime fechaFin)
         {
-            //return await _projectRepository.GetAllProjectsAsync();
-            throw new NotImplementedException();
+            var newProject = new Project
+            {
+                Nombre = nombre,
+                Descripcion = descripcion,
+                FechaInicio = fechaInicio,
+                FechaFin = fechaFin,
+                IsDeleted = false // Inicializamos como no eliminado
+            };
+            await _repository.CreateProjectAsync(newProject);
+            return newProject;
         }
 
-        public async Task<Project> GetProjectByIdAsync(int id)
+        public async Task<Project> UpdateProjectAsync(int id, string nombre, string descripcion, DateTime fechaInicio, DateTime fechaFin)
         {
-            //return await _projectRepository.GetProjectByIdAsync(id);
-            throw new NotImplementedException();
+            var projectToUpdate = await _repository.GetProjectByIdAsync(id);
+            if (projectToUpdate != null)
+            {
+                projectToUpdate.Nombre = nombre;
+                projectToUpdate.Descripcion = descripcion;
+                projectToUpdate.FechaInicio = fechaInicio;
+                projectToUpdate.FechaFin = fechaFin;
+                await _repository.UpdateProjectAsync(projectToUpdate);
+            }
+            return projectToUpdate;
         }
 
-        public async Task SoftDeleteProjectAsync(int id)
+        public async Task<Project> SoftDeleteProjectAsync(int id)
         {
-            throw new NotImplementedException();
-            //await _projectRepository.SoftDeleteProjectAsync(id);
-        }
-
-        public async Task UpdateProjectAsync(Project project)
-        {
-            throw new NotImplementedException();
-            //await _projectRepository.UpdateProjectAsync(project);
-        }
-
-        public Task UpdateProjectAsync(DTOProject projectDTO)
-        {
-            throw new NotImplementedException();
+            var projectToDelete = await _repository.GetProjectByIdAsync(id);
+            if (projectToDelete != null)
+            {
+                projectToDelete.IsDeleted = true;
+                await _repository.UpdateProjectAsync(projectToDelete);
+            }
+            return projectToDelete;
         }
     }
 }

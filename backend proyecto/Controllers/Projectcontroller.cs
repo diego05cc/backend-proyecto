@@ -1,80 +1,95 @@
-﻿using backend_proyecto.model;
-using backend_proyecto.services;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using backend_proyecto.Services;
+using backend_proyecto.model;
 using backend_proyecto.DTOs;
 
-namespace backend_proyecto.controllers
+[Route("api/[controller]")]
+[ApiController]
+public class ProjectController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProjectController : ControllerBase
+    private readonly IProjectService _projectService;
+
+    public ProjectController(IProjectService projectService)
     {
-        private readonly IProjectService _projectService;
+        _projectService = projectService;
+    }
 
-        public ProjectController(IProjectService projectService)
+    // GET: api/Project
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<DTOProject>>> GetAllProjects()
+    {
+        var projects = await _projectService.GetAllProjectsAsync();
+        var dtoProjects = projects.Select(project => new DTOProject
         {
-            _projectService = projectService;
-        }
+            Id = project.Id,
+            Nombre = project.Nombre,
+            Descripcion = project.Descripcion,
+            FechaInicio = project.FechaInicio,
+            FechaFin = project.FechaFin,
+            IsDeleted = project.IsDeleted
+        }).ToList();
+        return Ok(dtoProjects);
+    }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<DTOProject>>> GetAllProjects()
+    // GET: api/Project/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DTOProject>> GetProjectByIdAsync(int id)
+    {
+        var project = await _projectService.GetProjectByIdAsync(id);
+        if (project == null)
         {
-            var projects = await _projectService.GetAllProjectsAsync();
-            return Ok(projects);
+            return NotFound();
         }
-
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DTOProject>> GetProjectById(int id)
+        var dtoProject = new DTOProject
         {
-            var project = await _projectService.GetProjectByIdAsync(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-            return Ok(project);
-        }
+            Id = project.Id,
+            Nombre = project.Nombre,
+            Descripcion = project.Descripcion,
+            FechaInicio = project.FechaInicio,
+            FechaFin = project.FechaFin,
+            IsDeleted = project.IsDeleted
+        };
+        return Ok(dtoProject);
+    }
 
-        
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<DTOProject>> CreateProject(DTOProject project)
+    // POST: api/Project
+    [HttpPost]
+    public async Task<IActionResult> CreateProjectAsync([FromBody] DTOProject projectDTO)
+    {
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _projectService.CreateProjectAsync(project);
-            return CreatedAtAction("GetProjectById", new { id = project.Id }, project);
+            return BadRequest(ModelState);
         }
+        var project = await _projectService.CreateProjectAsync(projectDTO.Nombre, projectDTO.Descripcion, projectDTO.FechaInicio, projectDTO.FechaFin);
+        return Ok(project);
+    }
 
-        
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateProject(int id, DTOProject projectDTO)
+    // PUT: api/Project/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProjectAsync(int id, DTOProject projectDTO)
+    {
+        if (id != projectDTO.Id)
         {
-            if (id != projectDTO.Id)
-            {
-                return BadRequest();
-            }
-
-            await _projectService.UpdateProjectAsync(projectDTO);
-            return NoContent();
+            return BadRequest();
         }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SoftDeleteProject(int id)
+        var updatedProject = await _projectService.UpdateProjectAsync(projectDTO.Id, projectDTO.Nombre, projectDTO.Descripcion, projectDTO.FechaInicio, projectDTO.FechaFin);
+        if (updatedProject == null)
         {
-            await _projectService.SoftDeleteProjectAsync(id);
-            return NoContent();
+            return NotFound();
         }
+        return NoContent();
+    }
+
+    // DELETE: api/Project/{id}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> SoftDeleteProjectAsync(int id)
+    {
+        var project = await _projectService.GetProjectByIdAsync(id);
+        if (project == null)
+        {
+            return NotFound();
+        }
+        await _projectService.SoftDeleteProjectAsync(id);
+        return NoContent();
     }
 }

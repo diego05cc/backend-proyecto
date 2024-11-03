@@ -1,16 +1,14 @@
-﻿using backend_proyecto.DTOs;
-using backend_proyecto.model;
+﻿using backend_proyecto.model;
+using System.Threading.Tasks;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
     public interface IProjectService
     {
-        Task<IEnumerable<Project>> GetAllProjectsAsync();
+        Task<List<Project>> GetAllProjectsAsync();
         Task<Project> GetProjectByIdAsync(int id);
-        Task CreateProjectAsync(Project project);
-        Task UpdateProjectAsync(Project project);
-        Task SoftDeleteProjectAsync(int id);
-        Task CreateProjectAsync(DTOProject project);
-        Task UpdateProjectAsync(DTOProject projectDTO);
+        Task<Project> CreateProjectAsync(string nombre, string descripcion, DateTime fechaInicio, DateTime fechaFin);
+        Task<Project> UpdateProjectAsync(int id, string nombre, string descripcion, DateTime fechaInicio, DateTime fechaFin);
+        Task<Project> SoftDeleteProjectAsync(int id);
     }
 }
