@@ -1,5 +1,7 @@
-﻿using backend_proyecto.model;
+﻿using backend_proyecto.DTOs;
+using backend_proyecto.model;
 using backend_proyecto.repositories;
+
 
 namespace backend_proyecto.services
 {
@@ -12,17 +14,22 @@ namespace backend_proyecto.services
             _registeroftimeRepository = registeroftimeRepository;
         }
 
-        public async Task CreateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        public async Task CreateRegisteroftimeAsync(Registeroftime registeroftime)
         {
             await _registeroftimeRepository.CreateRegisteroftimeAsync(registeroftime);
         }
 
-        public async Task<IEnumerable<DTORegisteroftime>> GetAllRegisteroftimesAsync()
+        public Task CreateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync()
         {
             return await _registeroftimeRepository.GetAllRegisteroftimesAsync();
         }
 
-        public async Task<DTORegisteroftime> GetRegisteroftimeByIdAsync(int id)
+        public async Task<Registeroftime> GetRegisteroftimeByIdAsync(int id)
         {
             return await _registeroftimeRepository.GetRegisteroftimeByIdAsync(id);
         }
@@ -32,9 +39,14 @@ namespace backend_proyecto.services
             await _registeroftimeRepository.SoftDeleteRegisteroftimeAsync(id);
         }
 
-        public async Task UpdateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        public async Task UpdateRegisteroftimeAsync(Registeroftime registeroftime)
         {
             await _registeroftimeRepository.UpdateRegisteroftimeAsync(registeroftime);
+        }
+
+        public Task UpdateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

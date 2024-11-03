@@ -1,6 +1,7 @@
 ﻿using backend_proyecto.model;
 using backend_proyecto.services;
 using Microsoft.AspNetCore.Mvc;
+using backend_proyecto.DTOs;
 
 namespace backend_proyecto.controllers
 {
@@ -56,14 +57,14 @@ namespace backend_proyecto.controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateProject(int id, DTOProject project)
+        public async Task<IActionResult> UpdateProject(int id, DTOProject projectDTO)
         {
-            if (id != project.Id)
+            if (id != projectDTO.Id)
             {
                 return BadRequest();
             }
 
-            await _projectService.UpdateProjectAsync(project);
+            await _projectService.UpdateProjectAsync(projectDTO);
             return NoContent();
         }
 

@@ -1,4 +1,5 @@
-﻿using backend_proyecto.model;
+﻿using backend_proyecto.DTOs;
+using backend_proyecto.model;
 using backend_proyecto.repositories;
 
 namespace backend_proyecto.services
@@ -12,17 +13,22 @@ namespace backend_proyecto.services
             _tasksRepository = tasksRepository;
         }
 
-        public async Task CreateTaskAsync(DTOTasks task)
+        public async Task CreateTaskAsync(Tasks task)
         {
             await _tasksRepository.CreateTaskAsync(task);
         }
 
-        public async Task<IEnumerable<DTOTasks>> GetAllTasksAsync()
+        public Task CreateTaskAsync(DTOTasks task)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Tasks>> GetAllTasksAsync()
         {
             return await _tasksRepository.GetAllTasksAsync();
         }
 
-        public async Task<DTOTasks> GetTaskByIdAsync(int id)
+        public async Task<Tasks> GetTaskByIdAsync(int id)
         {
             return await _tasksRepository.GetTaskByIdAsync(id);
         }
@@ -32,9 +38,14 @@ namespace backend_proyecto.services
             await _tasksRepository.SoftDeleteTaskAsync(id);
         }
 
-        public async Task UpdateTaskAsync(DTOTasks task)
+        public async Task UpdateTaskAsync(Tasks task)
         {
             await _tasksRepository.UpdateTaskAsync(task);
+        }
+
+        public Task UpdateTaskAsync(DTOTasks task)
+        {
+            throw new NotImplementedException();
         }
     }
 }

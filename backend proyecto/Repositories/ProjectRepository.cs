@@ -13,20 +13,20 @@ namespace backend_proyecto.repositories
             _context = context;
         }
 
-        public async Task CreateProjectAsync(DTOProject project)
+        public async Task CreateProjectAsync(Project project)
         {
             await _context.Projects.AddAsync(project);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DTOProject>> GetAllProjectsAsync()
+        public async Task<IEnumerable<Project>> GetAllProjectsAsync()
         {
             return await _context.Projects
                 .Where(p => !p.IsDeleted)
                 .ToListAsync();
         }
 
-        public async Task<DTOProject> GetProjectByIdAsync(int id)
+        public async Task<Project> GetProjectByIdAsync(int id)
         {
             return await _context.Projects
                 .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
@@ -42,7 +42,7 @@ namespace backend_proyecto.repositories
             }
         }
 
-        public async Task UpdateProjectAsync(DTOProject project)
+        public async Task UpdateProjectAsync(Project project)
         {
             var existingProject = await _context.Projects.FindAsync(project.Id);
             if (existingProject != null)

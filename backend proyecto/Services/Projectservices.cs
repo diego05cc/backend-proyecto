@@ -1,5 +1,6 @@
 ﻿using backend_proyecto.model;
 using backend_proyecto.repositories;
+using backend_proyecto.DTOs;
 
 namespace backend_proyecto.services
 {
@@ -9,32 +10,48 @@ namespace backend_proyecto.services
 
         public ProjectService(IProjectRepository projectRepository)
         {
-            _projectRepository = projectRepository;
+            //_projectRepository = projectRepository;
+            throw new NotImplementedException();
         }
 
-        public async Task CreateProjectAsync(DTOProject project)
+        public async Task CreateProjectAsync(Project project)
         {
-            await _projectRepository.CreateProjectAsync(project);
+            //await _projectRepository.CreateProjectAsync(project);
+            throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<DTOProject>> GetAllProjectsAsync()
+        public Task CreateProjectAsync(DTOProject project)
         {
-            return await _projectRepository.GetAllProjectsAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<DTOProject> GetProjectByIdAsync(int id)
+        public async Task<IEnumerable<Project>> GetAllProjectsAsync()
         {
-            return await _projectRepository.GetProjectByIdAsync(id);
+            //return await _projectRepository.GetAllProjectsAsync();
+            throw new NotImplementedException();
+        }
+
+        public async Task<Project> GetProjectByIdAsync(int id)
+        {
+            //return await _projectRepository.GetProjectByIdAsync(id);
+            throw new NotImplementedException();
         }
 
         public async Task SoftDeleteProjectAsync(int id)
         {
-            await _projectRepository.SoftDeleteProjectAsync(id);
+            throw new NotImplementedException();
+            //await _projectRepository.SoftDeleteProjectAsync(id);
         }
 
-        public async Task UpdateProjectAsync(DTOProject project)
+        public async Task UpdateProjectAsync(Project project)
         {
-            await _projectRepository.UpdateProjectAsync(project);
+            throw new NotImplementedException();
+            //await _projectRepository.UpdateProjectAsync(project);
+        }
+
+        public Task UpdateProjectAsync(DTOProject projectDTO)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using backend_proyecto.model;
 using backend_proyecto.services;
 using Microsoft.AspNetCore.Mvc;
+using backend_proyecto.DTOs;
 
 namespace backend_proyecto.controllers
 {

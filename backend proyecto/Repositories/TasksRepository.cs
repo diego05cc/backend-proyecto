@@ -13,20 +13,20 @@ namespace backend_proyecto.repositories
             _context = context;
         }
 
-        public async Task CreateTaskAsync(DTOTasks task)
+        public async Task CreateTaskAsync(Tasks task)
         {
             await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DTOTasks>> GetAllTasksAsync()
+        public async Task<IEnumerable<Tasks>> GetAllTasksAsync()
         {
             return await _context.Tasks
                 .Where(t => !t.IsDeleted)
                 .ToListAsync();
         }
 
-        public async Task<DTOTasks> GetTaskByIdAsync(int id)
+        public async Task<Tasks> GetTaskByIdAsync(int id)
         {
             return await _context.Tasks
                 .FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
@@ -42,7 +42,7 @@ namespace backend_proyecto.repositories
             }
         }
 
-        public async Task UpdateTaskAsync(DTOTasks task)
+        public async Task UpdateTaskAsync(Tasks task)
         {
             var existingTask = await _context.Tasks.FindAsync(task.Id);
             if (existingTask != null)

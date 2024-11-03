@@ -13,20 +13,20 @@ namespace backend_proyecto.repositories
             _context = context;
         }
 
-        public async Task CreateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        public async Task CreateRegisteroftimeAsync(Registeroftime registeroftime)
         {
             await _context.Registeroftimes.AddAsync(registeroftime);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<DTORegisteroftime>> GetAllRegisteroftimesAsync()
+        public async Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync()
         {
             return await _context.Registeroftimes
                 .Where(r => !r.IsDeleted)
                 .ToListAsync();
         }
 
-        public async Task<DTORegisteroftime> GetRegisteroftimeByIdAsync(int id)
+        public async Task<Registeroftime> GetRegisteroftimeByIdAsync(int id)
         {
             return await _context.Registeroftimes
                 .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
@@ -42,7 +42,7 @@ namespace backend_proyecto.repositories
             }
         }
 
-        public async Task UpdateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        public async Task UpdateRegisteroftimeAsync(Registeroftime registeroftime)
         {
             var existingRegisteroftime = await _context.Registeroftimes.FindAsync(registeroftime.Id);
             if (existingRegisteroftime != null)
