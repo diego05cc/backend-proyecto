@@ -1,14 +1,13 @@
 ﻿using backend_proyecto.model;
-using backend_proyecto.repositories;
 using backend_proyecto.Repositories;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
-    public class EmployedProjectService : IEmployedProjectService
+    public class Employedprojectservices : IEmployedprojectservices
     {
         private readonly IEmployedProjectRepository _employedProjectRepository;
 
-        public EmployedProjectService(IEmployedProjectRepository employedProjectRepository)
+        public Employedprojectservices(IEmployedProjectRepository employedProjectRepository)
         {
             _employedProjectRepository = employedProjectRepository;
         }

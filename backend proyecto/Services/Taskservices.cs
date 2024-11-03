@@ -1,14 +1,15 @@
 ﻿using backend_proyecto.DTOs;
 using backend_proyecto.model;
-using backend_proyecto.repositories;
+using backend_proyecto.Repositories;
+using backend_proyecto.Services;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
-    public class TasksService : ITasksService
+    public class Taskservices : ITaskservices
     {
         private readonly ITasksRepository _tasksRepository;
 
-        public TasksService(ITasksRepository tasksRepository)
+        public Taskservices(ITasksRepository tasksRepository)
         {
             _tasksRepository = tasksRepository;
         }

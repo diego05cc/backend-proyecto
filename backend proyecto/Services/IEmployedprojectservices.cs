@@ -1,9 +1,9 @@
 ﻿using backend_proyecto.model;
 using backend_proyecto.Repositories;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
-    public interface IEmployedProjectService
+    public interface IEmployedprojectservices
     {
         Task<List<Employedproject>> GetAllEmployedProjectAsync();
         Task<Employedproject> GetEmployedProjectByIdAsync(int Id);

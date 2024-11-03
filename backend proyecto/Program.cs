@@ -1,9 +1,7 @@
 using backend_proyecto.Context;
-using backend_proyecto.repositories;
 using backend_proyecto.Repositories;
-using backend_proyecto.services;
-using backend_proyecto.Services;
 using Microsoft.EntityFrameworkCore;
+using backend_proyecto.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +12,13 @@ builder.Services.AddDbContext<TimeTrackingContext>(options => options.UseSqlServ
 builder.Services.AddScoped<IEmployedRepository,EmployedRepository>();
 builder.Services.AddScoped<IEmployedservices, Employedservices>();
 builder.Services.AddScoped<IEmployedProjectRepository,EmployedProjectRepository>();
-builder.Services.AddScoped<IEmployedProjectService,EmployedProjectService>();
+builder.Services.AddScoped<IEmployedprojectservices, Employedprojectservices>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProjectservices, Projectservices>();
 builder.Services.AddScoped<IRegisteroftimeRepository,RegisteroftimeRepository>();
-builder.Services.AddScoped<IRegisteroftimeService,RegisteroftimeService>();
+builder.Services.AddScoped<IRegisteroftimeservices,Registeroftimeservices>();
 builder.Services.AddScoped<ITasksRepository, TasksRepository>();
-builder.Services.AddScoped<ITasksService, TasksService>();
+builder.Services.AddScoped<ITaskservices, Taskservices>();
 
 
 builder.Services.AddControllers();

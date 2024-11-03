@@ -1,6 +1,6 @@
 ﻿using backend_proyecto.model;
 
-namespace backend_proyecto.repositories
+namespace backend_proyecto.Repositories
 {
     public interface ITasksRepository
     {

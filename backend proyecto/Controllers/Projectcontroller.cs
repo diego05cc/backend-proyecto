@@ -7,9 +7,9 @@ using backend_proyecto.DTOs;
 [ApiController]
 public class ProjectController : ControllerBase
 {
-    private readonly IProjectService _projectService;
+    private readonly IProjectservices _projectService;
 
-    public ProjectController(IProjectService projectService)
+    public ProjectController(IProjectservices projectService)
     {
         _projectService = projectService;
     }
@@ -60,7 +60,7 @@ public class ProjectController : ControllerBase
         {
             return BadRequest(ModelState);
         }
-        var project = await _projectService.CreateProjectAsync(projectDTO.Nombre, projectDTO.Descripcion, projectDTO.FechaInicio, projectDTO.FechaFin);
+        var project = await _projectService.CreateProjectAsync(projectDTO.Nombre, projectDTO.Descripcion, projectDTO.FechaInicio, projectDTO.FechaFin, projectDTO.IsDeleted);
         return Ok(project);
     }
 
@@ -72,7 +72,7 @@ public class ProjectController : ControllerBase
         {
             return BadRequest();
         }
-        var updatedProject = await _projectService.UpdateProjectAsync(projectDTO.Id, projectDTO.Nombre, projectDTO.Descripcion, projectDTO.FechaInicio, projectDTO.FechaFin);
+        var updatedProject = await _projectService.UpdateProjectAsync(projectDTO.Id, projectDTO.Nombre, projectDTO.Descripcion, projectDTO.FechaInicio, projectDTO.FechaFin, projectDTO.IsDeleted);
         if (updatedProject == null)
         {
             return NotFound();

@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace backend_proyecto.Services
 {
-    public class ProjectService : IProjectService
+    public class Projectservices : IProjectservices
     {
         private readonly IProjectRepository _repository;
 
-        public ProjectService(IProjectRepository repository)
+        public Projectservices(IProjectRepository repository)
         {
             _repository = repository;
         }
@@ -23,29 +23,30 @@ namespace backend_proyecto.Services
             return _repository.GetProjectByIdAsync(id);
         }
 
-        public async Task<Project> CreateProjectAsync(string nombre, string descripcion, DateTime fechaInicio, DateTime fechaFin)
+        public async Task<Project> CreateProjectAsync(string Nombre, string Descripcion, DateTime FechaInicio, DateTime FechaFin, bool IsDeleted)
         {
             var newProject = new Project
             {
-                Nombre = nombre,
-                Descripcion = descripcion,
-                FechaInicio = fechaInicio,
-                FechaFin = fechaFin,
-                IsDeleted = false // Inicializamos como no eliminado
+                Nombre = Nombre,
+                Descripcion = Descripcion,
+                FechaInicio = FechaInicio,
+                FechaFin = FechaFin,
+                IsDeleted = IsDeleted // Inicializamos como no eliminado
             };
             await _repository.CreateProjectAsync(newProject);
             return newProject;
         }
 
-        public async Task<Project> UpdateProjectAsync(int id, string nombre, string descripcion, DateTime fechaInicio, DateTime fechaFin)
+        public async Task<Project> UpdateProjectAsync(int id, string Nombre, string Descripcion, DateTime FechaInicio, DateTime FechaFin, bool IsDeleted)
         {
             var projectToUpdate = await _repository.GetProjectByIdAsync(id);
             if (projectToUpdate != null)
             {
-                projectToUpdate.Nombre = nombre;
-                projectToUpdate.Descripcion = descripcion;
-                projectToUpdate.FechaInicio = fechaInicio;
-                projectToUpdate.FechaFin = fechaFin;
+                projectToUpdate.Nombre = Nombre;
+                projectToUpdate.Descripcion = Descripcion;
+                projectToUpdate.FechaInicio = FechaInicio;
+                projectToUpdate.FechaFin = FechaFin;
+                projectToUpdate.IsDeleted = IsDeleted;
                 await _repository.UpdateProjectAsync(projectToUpdate);
             }
             return projectToUpdate;

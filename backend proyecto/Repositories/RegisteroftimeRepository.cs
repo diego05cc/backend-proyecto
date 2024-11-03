@@ -2,7 +2,7 @@
 using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend_proyecto.repositories
+namespace backend_proyecto.Repositories
 {
     public class RegisteroftimeRepository : IRegisteroftimeRepository
     {

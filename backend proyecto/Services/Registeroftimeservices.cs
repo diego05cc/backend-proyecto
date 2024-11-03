@@ -1,15 +1,15 @@
 ﻿using backend_proyecto.DTOs;
 using backend_proyecto.model;
-using backend_proyecto.repositories;
+using backend_proyecto.Repositories;
 
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
-    public class RegisteroftimeService : IRegisteroftimeService
+    public class Registeroftimeservices : IRegisteroftimeservices
     {
         private readonly IRegisteroftimeRepository _registeroftimeRepository;
 
-        public RegisteroftimeService(IRegisteroftimeRepository registeroftimeRepository)
+        public Registeroftimeservices(IRegisteroftimeRepository registeroftimeRepository)
         {
             _registeroftimeRepository = registeroftimeRepository;
         }

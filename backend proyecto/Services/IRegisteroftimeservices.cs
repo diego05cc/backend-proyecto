@@ -1,9 +1,9 @@
 ﻿using backend_proyecto.DTOs;
 using backend_proyecto.model;
 
-namespace backend_proyecto.services
+namespace backend_proyecto.Services
 {
-    public interface IRegisteroftimeService
+    public interface IRegisteroftimeservices
     {
         Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync();
         Task<Registeroftime> GetRegisteroftimeByIdAsync(int id);
