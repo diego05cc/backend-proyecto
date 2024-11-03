@@ -1,5 +1,5 @@
 ﻿using backend_proyecto.model;
-using backend_proyecto.services;
+using backend_proyecto.Services;
 using Microsoft.AspNetCore.Mvc;
 using backend_proyecto.DTOs;
 
@@ -9,9 +9,9 @@ namespace backend_proyecto.controllers
     [ApiController]
     public class TasksController : ControllerBase
     {
-        private readonly ITasksService _tasksService;
+        private readonly ITaskservices _tasksService;
 
-        public TasksController(ITasksService tasksService)
+        public TasksController(ITaskservices tasksService)
         {
             _tasksService = tasksService;
         }

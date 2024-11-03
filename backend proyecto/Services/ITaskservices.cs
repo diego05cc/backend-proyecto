@@ -10,5 +10,7 @@ namespace backend_proyecto.Services
         Task CreateTaskAsync(Tasks task);
         Task UpdateTaskAsync(Tasks task);
         Task SoftDeleteTaskAsync(int id);
+        Task CreateTaskAsync(DTOTasks task);
+        Task UpdateTaskAsync(DTOTasks task);
     }
 }

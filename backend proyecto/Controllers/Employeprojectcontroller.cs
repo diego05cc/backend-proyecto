@@ -1,5 +1,5 @@
 ﻿using backend_proyecto.model;
-using backend_proyecto.services;
+using backend_proyecto.Services;
 using Microsoft.AspNetCore.Mvc;
 using backend_proyecto.DTOs;
 
@@ -9,9 +9,9 @@ namespace backend_proyecto.Controllers
     [ApiController]
     public class EmployedProjectController : ControllerBase
     {
-        private readonly IEmployedProjectService _employedProjectService;
+        private readonly IEmployedprojectservices _employedProjectService;
 
-        public EmployedProjectController(IEmployedProjectService employedProjectService)
+        public EmployedProjectController(IEmployedprojectservices employedProjectService)
         {
             _employedProjectService = employedProjectService;
         }

@@ -1,5 +1,5 @@
 ﻿using backend_proyecto.model;
-using backend_proyecto.services;
+using backend_proyecto.Services;
 using Microsoft.AspNetCore.Mvc;
 using backend_proyecto.DTOs;
 
@@ -9,9 +9,9 @@ namespace backend_proyecto.controllers
     [ApiController]
     public class RegisteroftimeController : ControllerBase
     {
-        private readonly IRegisteroftimeService _registeroftimeService;
+        private readonly IRegisteroftimeservices _registeroftimeService;
 
-        public RegisteroftimeController(IRegisteroftimeService registeroftimeService)
+        public RegisteroftimeController(IRegisteroftimeservices registeroftimeService)
         {
             _registeroftimeService = registeroftimeService;
         }
