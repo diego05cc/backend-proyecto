@@ -1,16 +1,14 @@
-﻿using backend_proyecto.DTOs;
-using backend_proyecto.model;
+﻿using backend_proyecto.model;
+using System.Threading.Tasks;
 
 namespace backend_proyecto.Services
 {
     public interface IRegisteroftimeservices
     {
-        Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync();
+        Task<List<Registeroftime>> GetAllRegisteroftimesAsync();
         Task<Registeroftime> GetRegisteroftimeByIdAsync(int id);
-        Task CreateRegisteroftimeAsync(Registeroftime registeroftime);
-        Task UpdateRegisteroftimeAsync(Registeroftime registeroftime);
-        Task SoftDeleteRegisteroftimeAsync(int id);
-        Task CreateRegisteroftimeAsync(DTORegisteroftime registeroftime);
-        Task UpdateRegisteroftimeAsync(DTORegisteroftime registeroftime);
+        Task<Registeroftime> CreateRegisteroftimeAsync(int empleadoId, int tareaId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin, string descripcion, bool IsDeleted);
+        Task<Registeroftime> UpdateRegisteroftimeAsync(int id, int empleadoId, int tareaId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin, string descripcion, bool IsDeleted);
+        Task<Registeroftime> SoftDeleteRegisteroftimeAsync(int id);
     }
 }

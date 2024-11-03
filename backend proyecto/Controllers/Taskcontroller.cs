@@ -1,78 +1,93 @@
-﻿using backend_proyecto.model;
+﻿using Microsoft.AspNetCore.Mvc;
 using backend_proyecto.Services;
-using Microsoft.AspNetCore.Mvc;
+using backend_proyecto.model;
 using backend_proyecto.DTOs;
 
-namespace backend_proyecto.controllers
+[Route("api/[controller]")]
+[ApiController]
+public class TasksController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TasksController : ControllerBase
+    private readonly ITaskservices _tasksService;
+
+    public TasksController(ITaskservices tasksService)
     {
-        private readonly ITaskservices _tasksService;
+        _tasksService = tasksService;
+    }
 
-        public TasksController(ITaskservices tasksService)
+    // GET: api/Tasks
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<DTOTasks>>> GetAllTasks()
+    {
+        var tasks = await _tasksService.GetAllTasksAsync();
+        var dtoTasks = tasks.Select(t => new DTOTasks
         {
-            _tasksService = tasksService;
-        }
+            Id = t.Id,
+            Nombre = t.Nombre,
+            Descripcion = t.Descripcion,
+            ProyectoId = t.ProyectoId,
+            IsDeleted = t.IsDeleted
+        }).ToList();
+        return Ok(dtoTasks);
+    }
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<DTOTasks>>> GetAllTasks()
+    // GET: api/Tasks/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DTOTasks>> GetTaskByIdAsync(int id)
+    {
+        var task = await _tasksService.GetTaskByIdAsync(id);
+        if (task == null)
         {
-            var tasks = await _tasksService.GetAllTasksAsync();
-            return Ok(tasks);
+            return NotFound();
         }
-
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DTOTasks>> GetTaskById(int id)
+        var dtoTask = new DTOTasks
         {
-            var task = await _tasksService.GetTaskByIdAsync(id);
-            if (task == null)
-            {
-                return NotFound();
-            }
-            return Ok(task);
-        }
+            Id = task.Id,
+            Nombre = task.Nombre,
+            Descripcion = task.Descripcion,
+            ProyectoId = task.ProyectoId,
+            IsDeleted = task.IsDeleted
+        };
+        return Ok(dtoTask);
+    }
 
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<DTOTasks>> CreateTask(DTOTasks task)
+    // POST: api/Tasks
+    [HttpPost]
+    public async Task<IActionResult> CreateTaskAsync([FromBody] DTOTasks taskDTO)
+    {
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _tasksService.CreateTaskAsync(task);
-            return CreatedAtAction("GetTaskById", new { id = task.Id }, task);
+            return BadRequest(ModelState);
         }
+        var task = await _tasksService.CreateTaskAsync(taskDTO.Nombre, taskDTO.Descripcion, taskDTO.ProyectoId, taskDTO.IsDeleted);
+        return Ok(task);
+    }
 
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateTask(int id, DTOTasks task)
+    // PUT: api/Tasks/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateTaskAsync(int id, DTOTasks taskDTO)
+    {
+        if (id != taskDTO.Id)
         {
-            if (id != task.Id)
-            {
-                return BadRequest();
-            }
-
-            await _tasksService.UpdateTaskAsync(task);
-            return NoContent();
+            return BadRequest();
         }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SoftDeleteTask(int id)
+        var updatedTask = await _tasksService.UpdateTaskAsync(taskDTO.Id, taskDTO.Nombre, taskDTO.Descripcion, taskDTO.ProyectoId, taskDTO.IsDeleted);
+        if (updatedTask == null)
         {
-            await _tasksService.SoftDeleteTaskAsync(id);
-            return NoContent();
+            return NotFound();
         }
+        return NoContent();
+    }
+
+    // DELETE: api/Tasks/{id}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> SoftDeleteTaskAsync(int id)
+    {
+        var task = await _tasksService.GetTaskByIdAsync(id);
+        if (task == null)
+        {
+            return NotFound();
+        }
+        await _tasksService.SoftDeleteTaskAsync(id);
+        return NoContent();
     }
 }

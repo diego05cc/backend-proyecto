@@ -1,82 +1,88 @@
-﻿using backend_proyecto.model;
+﻿using Microsoft.AspNetCore.Mvc;
 using backend_proyecto.Services;
-using Microsoft.AspNetCore.Mvc;
+using backend_proyecto.model;
 using backend_proyecto.DTOs;
 
-namespace backend_proyecto.controllers
+[Route("api/[controller]")]
+[ApiController]
+public class RegisteroftimeController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RegisteroftimeController : ControllerBase
+    private readonly IRegisteroftimeservices _registeroftimeService;
+
+    public RegisteroftimeController(IRegisteroftimeservices registeroftimeService)
     {
-        private readonly IRegisteroftimeservices _registeroftimeService;
+        _registeroftimeService = registeroftimeService;
+    }
 
-        public RegisteroftimeController(IRegisteroftimeservices registeroftimeService)
+    // GET: api/Registeroftime
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<DTORegisteroftime>>> GetAllRegisteroftimes()
+    {
+        var registeroftimes = await _registeroftimeService.GetAllRegisteroftimesAsync();
+        var dtoRegisteroftimes = registeroftimes.Select(r => new DTORegisteroftime
         {
-            _registeroftimeService = registeroftimeService;
-        }
+            Id = r.Id,
+            EmpleadoId = r.EmpleadoId,
+            TareaId = r.TareaId,
+            Fecha = r.Fecha,
+            HoraInicio = r.HoraInicio,
+            HoraFin = r.HoraFin,
+            Descripcion = r.Descripcion,
+            IsDeleted = r.IsDeleted
+        }).ToList();
+        return Ok(dtoRegisteroftimes);
+    }
 
-        
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<DTORegisteroftime>>> GetAllRegisteroftimes()
+    // GET: api/Registeroftime/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<DTORegisteroftime>> GetRegisteroftimeByIdAsync(int id)
+    {
+        var registeroftime = await _registeroftimeService.GetRegisteroftimeByIdAsync(id);
+        if (registeroftime == null)
         {
-            var registeroftimes = await _registeroftimeService.GetAllRegisteroftimesAsync();
-            return Ok(registeroftimes);
+            return NotFound();
         }
-
-        
-        [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DTORegisteroftime>> GetRegisteroftimeById(int id)
+        var dtoRegisteroftime = new DTORegisteroftime
         {
-            var registeroftime = await _registeroftimeService.GetRegisteroftimeByIdAsync(id);
-            if (registeroftime == null)
-            {
-                return NotFound();
-            }
-            return Ok(registeroftime);
-        }
+            Id = registeroftime.Id,
+            EmpleadoId = registeroftime.EmpleadoId,
+            TareaId = registeroftime.TareaId,
+            Fecha = registeroftime.Fecha,
+            HoraInicio = registeroftime.HoraInicio,
+            HoraFin = registeroftime.HoraFin,
+            Descripcion = registeroftime.Descripcion,
+            IsDeleted = registeroftime.IsDeleted
+        };
+        return Ok(dtoRegisteroftime);
+    }
 
-     
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<DTORegisteroftime>> CreateRegisteroftime(DTORegisteroftime registeroftime)
+    // POST: api/Registeroftime
+    [HttpPost]
+    public async Task<IActionResult> CreateRegisteroftimeAsync([FromBody] DTORegisteroftime registeroftimeDTO)
+    {
+        if (!ModelState.IsValid)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _registeroftimeService.CreateRegisteroftimeAsync(registeroftime);
-            return CreatedAtAction("GetRegisteroftimeById", new { id = registeroftime.Id }, registeroftime);
+            return BadRequest(ModelState);
         }
+        var registeroftime = await _registeroftimeService.CreateRegisteroftimeAsync(registeroftimeDTO.EmpleadoId, registeroftimeDTO.TareaId, registeroftimeDTO.Fecha, registeroftimeDTO.HoraInicio, registeroftimeDTO.HoraFin, registeroftimeDTO.Descripcion, registeroftimeDTO.IsDeleted);
+        return Ok(registeroftime);
+    }
 
-        
-        [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UpdateRegisteroftime(int id, DTORegisteroftime registeroftime)
+    // PUT: api/Registeroftime/{id}
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateRegisteroftimeAsync(int id, DTORegisteroftime registeroftimeDTO)
+    {
+        if (id != registeroftimeDTO.Id)
         {
-            if (id != registeroftime.Id)
-            {
-                return BadRequest();
-            }
-
-            await _registeroftimeService.UpdateRegisteroftimeAsync(registeroftime);
-            return NoContent();
+            return BadRequest();
         }
-
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> SoftDeleteRegisteroftime(int id)
+        var updatedRegisteroftime = await _registeroftimeService.UpdateRegisteroftimeAsync(registeroftimeDTO.Id, registeroftimeDTO.EmpleadoId, registeroftimeDTO.TareaId, registeroftimeDTO.Fecha, registeroftimeDTO.HoraInicio, registeroftimeDTO.HoraFin, registeroftimeDTO.Descripcion,registeroftimeDTO.IsDeleted);
+        if (updatedRegisteroftime == null)
         {
-            await _registeroftimeService.SoftDeleteRegisteroftimeAsync(id);
-            return NoContent();
+            return NotFound();
         }
+        return NoContent();
     }
 }
+
+    // DELETE

@@ -1,52 +1,71 @@
-﻿using backend_proyecto.DTOs;
+﻿using backend_proyecto.Repositories;
 using backend_proyecto.model;
-using backend_proyecto.Repositories;
+using System.Threading.Tasks;
 
+using backend_proyecto.Services;
 
 namespace backend_proyecto.Services
 {
     public class Registeroftimeservices : IRegisteroftimeservices
     {
-        private readonly IRegisteroftimeRepository _registeroftimeRepository;
+        private readonly IRegisteroftimeRepository _repository;
 
-        public Registeroftimeservices(IRegisteroftimeRepository registeroftimeRepository)
+        public Registeroftimeservices(IRegisteroftimeRepository repository)
         {
-            _registeroftimeRepository = registeroftimeRepository;
+            _repository = repository;
         }
 
-        public async Task CreateRegisteroftimeAsync(Registeroftime registeroftime)
+        public Task<List<Registeroftime>> GetAllRegisteroftimesAsync()
         {
-            await _registeroftimeRepository.CreateRegisteroftimeAsync(registeroftime);
+            return _repository.GetAllRegisteroftimesAsync();
         }
 
-        public Task CreateRegisteroftimeAsync(DTORegisteroftime registeroftime)
+        public Task<Registeroftime> GetRegisteroftimeByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _repository.GetRegisteroftimeByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Registeroftime>> GetAllRegisteroftimesAsync()
+        public async Task<Registeroftime> CreateRegisteroftimeAsync(int empleadoId, int tareaId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin, string descripcion,bool IsDeleted)
         {
-            return await _registeroftimeRepository.GetAllRegisteroftimesAsync();
+            var newRegisteroftime = new Registeroftime
+            {
+                EmpleadoId = empleadoId,
+                TareaId = tareaId,
+                Fecha = fecha,
+                HoraInicio = horaInicio,
+                HoraFin = horaFin,
+                Descripcion = descripcion,
+                IsDeleted = IsDeleted
+            };
+            await _repository.CreateRegisteroftimeAsync(newRegisteroftime);
+            return newRegisteroftime;
         }
 
-        public async Task<Registeroftime> GetRegisteroftimeByIdAsync(int id)
+        public async Task<Registeroftime> UpdateRegisteroftimeAsync(int id, int empleadoId, int tareaId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin, string descripcion,bool IsDeleted)
         {
-            return await _registeroftimeRepository.GetRegisteroftimeByIdAsync(id);
+            var registeroftimeToUpdate = await _repository.GetRegisteroftimeByIdAsync(id);
+            if (registeroftimeToUpdate != null)
+            {
+                registeroftimeToUpdate.EmpleadoId = empleadoId;
+                registeroftimeToUpdate.TareaId = tareaId;
+                registeroftimeToUpdate.Fecha = fecha;
+                registeroftimeToUpdate.HoraInicio = horaInicio;
+                registeroftimeToUpdate.HoraFin = horaFin;
+                registeroftimeToUpdate.Descripcion = descripcion;
+                registeroftimeToUpdate.IsDeleted = IsDeleted;
+                await _repository.UpdateRegisteroftimeAsync(registeroftimeToUpdate);
+            }
+            return registeroftimeToUpdate;
         }
 
-        public async Task SoftDeleteRegisteroftimeAsync(int id)
+        public async Task<Registeroftime> SoftDeleteRegisteroftimeAsync(int id)
         {
-            await _registeroftimeRepository.SoftDeleteRegisteroftimeAsync(id);
-        }
-
-        public async Task UpdateRegisteroftimeAsync(Registeroftime registeroftime)
-        {
-            await _registeroftimeRepository.UpdateRegisteroftimeAsync(registeroftime);
-        }
-
-        public Task UpdateRegisteroftimeAsync(DTORegisteroftime registeroftime)
-        {
-            throw new NotImplementedException();
+            var registeroftimeToDelete = await _repository.GetRegisteroftimeByIdAsync(id);
+            if (registeroftimeToDelete != null)
+            {
+                await _repository.SoftDeleteRegisteroftimeAsync(registeroftimeToDelete);
+            }
+            return registeroftimeToDelete;
         }
     }
 }

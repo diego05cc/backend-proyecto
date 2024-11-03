@@ -1,6 +1,7 @@
 ﻿using backend_proyecto.Context;
 using backend_proyecto.model;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace backend_proyecto.Repositories
 {
@@ -13,46 +14,32 @@ namespace backend_proyecto.Repositories
             _context = context;
         }
 
+        public async Task<List<Tasks>> GetAllTasksAsync()
+        {
+            return await _context.Tasks.ToListAsync();
+        }
+
+        public async Task<Tasks> GetTaskByIdAsync(int id)
+        {
+            return await _context.Tasks.FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
+        }
+
         public async Task CreateTaskAsync(Tasks task)
         {
             await _context.Tasks.AddAsync(task);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Tasks>> GetAllTasksAsync()
-        {
-            return await _context.Tasks
-                .Where(t => !t.IsDeleted)
-                .ToListAsync();
-        }
-
-        public async Task<Tasks> GetTaskByIdAsync(int id)
-        {
-            return await _context.Tasks
-                .FirstOrDefaultAsync(t => t.Id == id && !t.IsDeleted);
-        }
-
-        public async Task SoftDeleteTaskAsync(int id)
-        {
-            var task = await _context.Tasks.FindAsync(id);
-            if (task != null)
-            {
-                task.IsDeleted = true;
-                await _context.SaveChangesAsync();
-            }
-        }
-
         public async Task UpdateTaskAsync(Tasks task)
         {
-            var existingTask = await _context.Tasks.FindAsync(task.Id);
-            if (existingTask != null)
-            {
-                existingTask.Nombre = task.Nombre;
-                existingTask.Descripcion = task.Descripcion;
-                existingTask.ProyectoId = task.ProyectoId;
+            _context.Tasks.Update(task);
+            await _context.SaveChangesAsync();
+        }
 
-                await _context.SaveChangesAsync();
-            }
+        public async Task SoftDeleteTaskAsync(Tasks task)
+        {
+            task.IsDeleted = true;
+            await UpdateTaskAsync(task);
         }
     }
 }

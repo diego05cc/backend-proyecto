@@ -1,52 +1,64 @@
-﻿using backend_proyecto.DTOs;
+﻿using backend_proyecto.Repositories;
 using backend_proyecto.model;
-using backend_proyecto.Repositories;
 using backend_proyecto.Services;
+using System.Threading.Tasks;
 
 namespace backend_proyecto.Services
 {
     public class Taskservices : ITaskservices
     {
-        private readonly ITasksRepository _tasksRepository;
+        private readonly ITasksRepository _repository;
 
-        public Taskservices(ITasksRepository tasksRepository)
+        public Taskservices(ITasksRepository repository)
         {
-            _tasksRepository = tasksRepository;
+            _repository = repository;
         }
 
-        public async Task CreateTaskAsync(Tasks task)
+        public Task<List<Tasks>> GetAllTasksAsync()
         {
-            await _tasksRepository.CreateTaskAsync(task);
+            return _repository.GetAllTasksAsync();
         }
 
-        public Task CreateTaskAsync(DTOTasks task)
+        public Task<Tasks> GetTaskByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _repository.GetTaskByIdAsync(id);
         }
 
-        public async Task<IEnumerable<Tasks>> GetAllTasksAsync()
+        public async Task<Tasks> CreateTaskAsync(string nombre, string descripcion, int proyectoId, bool IsDeleted)
         {
-            return await _tasksRepository.GetAllTasksAsync();
+            var newTask = new Tasks
+            {
+                Nombre = nombre,
+                Descripcion = descripcion,
+                ProyectoId = proyectoId,
+                IsDeleted = IsDeleted
+            };
+            await _repository.CreateTaskAsync(newTask);
+            return newTask;
         }
 
-        public async Task<Tasks> GetTaskByIdAsync(int id)
+        public async Task<Tasks> UpdateTaskAsync(int id, string nombre, string descripcion, int proyectoId, bool IsDeleted)
         {
-            return await _tasksRepository.GetTaskByIdAsync(id);
+            var taskToUpdate = await _repository.GetTaskByIdAsync(id);
+            if (taskToUpdate != null)
+            {
+                taskToUpdate.Nombre = nombre;
+                taskToUpdate.Descripcion = descripcion;
+                taskToUpdate.ProyectoId = proyectoId;
+                taskToUpdate.IsDeleted = IsDeleted;
+                await _repository.UpdateTaskAsync(taskToUpdate);
+            }
+            return taskToUpdate;
         }
 
-        public async Task SoftDeleteTaskAsync(int id)
+        public async Task<Tasks> SoftDeleteTaskAsync(int id)
         {
-            await _tasksRepository.SoftDeleteTaskAsync(id);
-        }
-
-        public async Task UpdateTaskAsync(Tasks task)
-        {
-            await _tasksRepository.UpdateTaskAsync(task);
-        }
-
-        public Task UpdateTaskAsync(DTOTasks task)
-        {
-            throw new NotImplementedException();
+            var taskToDelete = await _repository.GetTaskByIdAsync(id);
+            if (taskToDelete != null)
+            {
+                await _repository.SoftDeleteTaskAsync(taskToDelete);
+            }
+            return taskToDelete;
         }
     }
 }

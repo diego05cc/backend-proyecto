@@ -10,8 +10,8 @@ namespace backend_proyecto.model
               public DateTime Fecha { get; set; }
             public TimeSpan HoraInicio { get; set; }
             public TimeSpan HoraFin { get; set; }
-            public required string Descripcion { get; set; }
-            public required Employed Employed { get; set; }
-            public required Tasks Tasks { get; set; }
+            public  string Descripcion { get; set; }
+            public  Employed Employed { get; set; }
+            public  Tasks Tasks { get; set; }
         }
     }
