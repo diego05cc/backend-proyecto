@@ -83,6 +83,18 @@ public class RegisteroftimeController : ControllerBase
         }
         return NoContent();
     }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRegisteroftimeAsync(int id)
+    {
+        var registeroftime = await _registeroftimeService.GetRegisteroftimeByIdAsync(id);
+        if (registeroftime == null)
+        {
+            return NotFound();
+        }
+
+        await _registeroftimeService.SoftDeleteRegisteroftimeAsync(id);
+        return NoContent();
+    }
 }
 
     // DELETE
