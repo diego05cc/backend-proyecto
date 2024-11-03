@@ -25,7 +25,7 @@ namespace backend_proyecto.Services
             return _repository.GetRegisteroftimeByIdAsync(id);
         }
 
-        public async Task<Registeroftime> CreateRegisteroftimeAsync(int empleadoId, int tareaId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin, string descripcion,bool IsDeleted)
+        public async Task<Registeroftime> CreateRegisteroftimeAsync(int empleadoId, int tareaId, DateTime fecha, DateTime horaInicio, DateTime horaFin, string descripcion,bool IsDeleted)
         {
             var newRegisteroftime = new Registeroftime
             {
@@ -41,7 +41,7 @@ namespace backend_proyecto.Services
             return newRegisteroftime;
         }
 
-        public async Task<Registeroftime> UpdateRegisteroftimeAsync(int id, int empleadoId, int tareaId, DateTime fecha, TimeSpan horaInicio, TimeSpan horaFin, string descripcion,bool IsDeleted)
+        public async Task<Registeroftime> UpdateRegisteroftimeAsync(int id, int empleadoId, int tareaId, DateTime fecha, DateTime horaInicio, DateTime horaFin, string descripcion,bool IsDeleted)
         {
             var registeroftimeToUpdate = await _repository.GetRegisteroftimeByIdAsync(id);
             if (registeroftimeToUpdate != null)
