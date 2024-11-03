@@ -8,10 +8,10 @@ namespace backend_proyecto.model
             public int TareaId { get; set; }
              public bool IsDeleted { get; set; }
               public DateTime Fecha { get; set; }
-            public TimeSpan HoraInicio { get; set; }
-            public TimeSpan HoraFin { get; set; }
+            public DateTime HoraInicio { get; set; }
+            public DateTime HoraFin { get; set; }
             public  string Descripcion { get; set; }
-            public  Employed Employed { get; set; }
-            public  Tasks Tasks { get; set; }
+            public virtual Employed Employed { get; set; }
+            public virtual Tasks Tasks { get; set; }
         }
     }
